@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.zip
+study/runs/
+study/results/
+study/inputs/
+study/inherited_v2/

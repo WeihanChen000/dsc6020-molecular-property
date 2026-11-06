@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "context": "Lipophilicity_random_group_split3103",
+  "test_n": 420,
+  "routes": [
+    {
+      "route": "descriptor_ridge",
+      "sample_id": "Lipophilicity_03592",
+      "target": -0.94,
+      "prediction": 64602147.901502706,
+      "selected_alpha": 1,
+      "valid_rmse": 0.7561117130499202,
+      "test_rmse": 3152262.0883528576,
+      "largest_error_fraction_of_test_SSE": 0.9999999999999155,
+      "raw_ipc_recomputed": 7.121715169302299e+30
+    },
+    {
+      "route": "fusion_ridge",
+      "sample_id": "Lipophilicity_03592",
+      "target": -0.94,
+      "prediction": 6561484.995935844,
+      "selected_alpha": 1000,
+      "valid_rmse": 0.7009107848021815,
+      "test_rmse": 320167.73017762386,
+      "largest_error_fraction_of_test_SSE": 0.9999999999931561,
+      "raw_ipc_recomputed": 7.121715169302299e+30
+    }
+  ],
+  "raw_ipc_runtime_sensitivity": {
+    "default": 7.121715169302299e+30,
+    "default_blas_threads": [
+      24
+    ],
+    "by_thread_limit": {
+      "1": 7.393488857700842e+30,
+      "2": 7.394438802056707e+30,
+      "4": 7.393143479000986e+30,
+      "8": 6.496166135665607e+30
+    }
+  },
+  "scope": "Post-hoc arithmetic decomposition of saved predictions. Default upstream runtime reproduces cache; descriptor magnitude varies with thread limit. No refitting, clipping, exclusion or replacement of reported test metrics."
+}

@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "stage": "all",
+  "skipped_optional_stages": [],
+  "selected_models_reloaded": 187,
+  "fits_audited": 679,
+  "prediction_rows_checked": 115244,
+  "selected_near_epoch_limit": [
+    "B_Lipophilicity_random_group_split3103/dmpnn/seed0"
+  ],
+  "ridge_boundary_optima": [
+    "E_ESOL_random_group_split3103/descriptor_ridge",
+    "E_Lipophilicity_random_group_split3103/descriptor_ridge",
+    "E_Lipophilicity_random_scaffold_split3102/descriptor_ridge"
+  ],
+  "source_signature": "5abf2342373812d1b58541159fdce6f8e6b8fa06e9c308d9246af787f0a6c7bd",
+  "scope": "Internal implementation consistency; not evidence of external generalization or teacher approval."
+}

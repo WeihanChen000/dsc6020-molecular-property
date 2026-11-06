@@ -1,0 +1,4 @@
+seed,shared_epochs,first_epoch_absolute_difference_over_1e_6,first_epoch_validation_difference,maximum_validation_difference
+0,300,4,0.0,0.1327186188127969
+1,243,7,0.0,0.11958485700672405
+2,300,4,0.0,0.11096207653036894

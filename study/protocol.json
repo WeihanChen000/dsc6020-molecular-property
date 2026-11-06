@@ -1,0 +1,115 @@
+{
+  "version": "v3.0",
+  "status": "exploratory_followup_not_official_benchmark",
+  "datasets": [
+    "ESOL",
+    "Lipophilicity"
+  ],
+  "splits": [
+    "random",
+    "scaffold"
+  ],
+  "main_train_seeds": [
+    0,
+    1,
+    2
+  ],
+  "small_data_dataset": "Lipophilicity (new); ESOL (inherited plus ECFP control)",
+  "small_data_fractions": [
+    0.25,
+    0.5
+  ],
+  "subset_seeds": [
+    100,
+    101,
+    102
+  ],
+  "small_data_train_seed": 0,
+  "subset_policy": "Shuffle connectivity groups once per split/subset_seed. Take nested prefixes reaching the target row count. Never split a group. Full-data endpoint uses seed 0 once.",
+  "selection": "Minimize validation RMSE, candidate ties go to the first listed candidate. Main hyperparameters selected with training seed 0, then re-fit seeds 1 and 2. Small-data contexts reselect on the same fixed validation partition. No candidate test scores are computed.",
+  "rf": {
+    "n_estimators": 200,
+    "candidates": [
+      {
+        "max_features": 1.0,
+        "min_samples_leaf": 1
+      },
+      {
+        "max_features": 0.5,
+        "min_samples_leaf": 1
+      },
+      {
+        "max_features": 1.0,
+        "min_samples_leaf": 2
+      }
+    ]
+  },
+  "ridge": {
+    "alphas": [
+      1,
+      10,
+      100,
+      1000,
+      10000,
+      100000,
+      1000000
+    ],
+    "boundary_extension": [
+      10000000,
+      100000000
+    ],
+    "extension_rule": "Evaluate extension only if initial best alpha is 1000000; stop after this one extension, flag any remaining boundary optimum."
+  },
+  "dmpnn": {
+    "library": "chemprop==2.2.1",
+    "hidden_dim": 128,
+    "depth": 3,
+    "aggregation": "mean",
+    "dropout": 0.1,
+    "learning_rates": [
+      0.001,
+      0.0003
+    ],
+    "weight_decay": 1e-05,
+    "batch_size": 64,
+    "max_epochs": 150,
+    "patience": 30,
+    "extension_max_epochs": 300,
+    "extension_rule": "At epoch 150, extend only when best epoch >= 130; keep optimizer state. Stop by 300, flag near-boundary best epochs."
+  },
+  "mlp": {
+    "hidden_dim": 128,
+    "dropout": 0.1,
+    "learning_rates": [
+      0.001,
+      0.0003
+    ],
+    "weight_decay": 0.0001,
+    "batch_size": 64,
+    "max_epochs": 300,
+    "patience": 40
+  },
+  "preprocessing": "Use audited shared non-stereo connectivity for GNN and LM. Reuse frozen deterministic LM embeddings. Fit all imputers, input scalers and target scalers using the selected training subset only.",
+  "metrics": [
+    "RMSE",
+    "MAE"
+  ],
+  "compute": {
+    "device": "cpu",
+    "threads_per_process": 4
+  },
+  "reporting": "Save every validation trial, selection, learning curve, selected checkpoint, val/test predictions, training membership and timing. Report mean and sample SD for training-seed replicates separately from subset-seed variation. Deterministic Ridge is not replicated on identical input. Comparisons are model pipelines, not isolated architecture effects. Current task does not claim teacher benchmark approval.",
+  "split_seeds": [
+    3101,
+    3102,
+    3103
+  ],
+  "max_workers": 3,
+  "ecfp": {
+    "radius": 2,
+    "fp_size": 2048,
+    "include_chirality": false,
+    "representation": "hashed_count"
+  },
+  "budget_extension_max": 450
+}
