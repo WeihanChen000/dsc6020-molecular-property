@@ -1,0 +1,12 @@
+{
+  "verdict": "mixed",
+  "fits": 8,
+  "selected": 6,
+  "shared_test_records": 58,
+  "grouped_test_components": 69,
+  "largest_test_component": 44,
+  "selection_sha256": {
+    "dmpnn": "039f99284315b9f39eb369d46103a661a5f9676b78dc8cb778f8db34a30fad28",
+    "mlp": "83bbacac80fef58d4d8cc74a0baaf435b03af26f6a306bda4831d2203af908a4"
+  }
+}

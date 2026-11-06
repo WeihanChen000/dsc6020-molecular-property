@@ -1,5 +1,27 @@
 # 怎样复核
 
+## BACE 相似组整组留出
+
+使用下文的同一份 bace.csv、第三轮的 records 目录、相同的锁定环境。把原 BACE 包解压到 bace-runs，这次只借用里面按 ID 存放的冻结向量。两种模型都用新分区重新训练。要复算发布的权重，把新包解压到 grouped-runs，其顶层应直接有 dmpnn 和 mlp 两个目录。[原 BACE 包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v7) · [相似分组模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v8)
+
+```powershell
+$py = '.\.venv\Scripts\python.exe'
+$scripts = 'final/bace/similarity'
+$cache = 'bace-runs/mlp/embeddings.npz'
+& $py "$scripts/partition_groups.py" --raw bace.csv --study records --out rebuilt-partitions.csv
+& $py "$scripts/compare.py" --raw bace.csv --study records --cache $cache --runs grouped-runs --out checked-grouped
+```
+
+第一行 Python 命令重建成员表。第二行重新检查分区成员、冻结向量与训练样本 ID、两条路线的验证选参记录和模型文件，再生成新旧划分的对照表。如果要从头训练，用一个新的输出目录执行下面三行。每个学习率都从头拟合，三个种子共用同一批验证与测试记录。
+
+新包 grouped-runs.zip 的 SHA256 为 `f9056fb1bf0a05174b73e5c6cc29f7ea93a7565eef936f29ee804895ec54ec2a`。发布前从解压后的模型包、冻结向量和第三轮数据包重新运行了评分脚本。
+
+```powershell
+& $py "$scripts/fit.py" dmpnn --raw bace.csv --study records --cache $cache --runs grouped-retrain
+& $py "$scripts/fit.py" mlp --raw bace.csv --study records --cache $cache --runs grouped-retrain
+& $py "$scripts/compare.py" --raw bace.csv --study records --cache $cache --runs grouped-retrain --out rescored-grouped
+```
+
 ## 复算 BACE 的独立验证
 
 想看某条记录的预测，可以打开[测试预测表](final/bace/results/predictions.csv)，用 sample_id 对照[分区表](final/bace/partitions.csv)。例如 BACE_0000 对应原数据的第 0 行，从首条数据开始计数。三个种子共用测试 ID。
