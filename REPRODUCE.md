@@ -1,5 +1,16 @@
 # 怎样复核
 
+## 复算 BACE 全测试集的偏差方向，追溯两条相同标签
+
+第一条命令使用仓库内已有的 300 条测试记录及三个种子的预测。第二条使用原 DeepChem bace.csv 和 2016 年论文的 ci6b00290_si_001.zip，从作者的 SDF 按 CID 对照 IC50、单位、关系和来源论文。两个文件可放在仓库外并传入对应路径。[DeepChem 文件](https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv) · [作者补充包](https://doi.org/10.1021/acs.jcim.6b00290.s001)
+
+```powershell
+.\.venv\Scripts\python.exe final/bace/similarity/mean_pull.py --out checked/mean_pull.csv
+python final/bace/similarity/trace_pair.py --raw bace.csv --supplement ci6b00290_si_001.zip --out checked/pair_source.csv
+```
+
+toward 统计误差方向朝训练均值，between 要求预测落在实测值和均值之间，closer 允许跨过均值但要求绝对距离缩短。mean_error 为预测减去实测的平均值。scope 为 all 时保留全部记录，其他两种取值分别排除指定两条或种子 0 的 13 种翻转骨架。
+
 ## 对照 13 种骨架在三个种子下的表现
 
 用项目的 Python 环境运行下面的命令。输入是仓库里已发布的测试预测、最近邻相似度和主评分表。RDKit 用于读取骨架重原子数和环数，无环记录的 Murcko 骨架按空结构计数。
