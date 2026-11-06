@@ -1,5 +1,15 @@
 # 怎样复核
 
+## 核对 BACE 的早停轮次和预测分布
+
+从相似组留出实验的发布页下载 grouped-runs.zip，放在仓库根目录。在项目 Python 环境中运行下面的命令，无需解压或训练。脚本校验压缩包摘要，从六个入选模型的逐轮日志定位验证 RMSE 最低点，再核对已发布的验证和测试 RMSE。[相似组模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v8)
+
+```powershell
+.\.venv\Scripts\python.exe final/bace/similarity/stopping_review.py --archive grouped-runs.zip --out checked-stopping
+```
+
+early_stops.csv 保存最佳轮、停止轮和对应损失；prediction_spread.csv 分别统计验证集和测试集，标准差按样本标准差计算。constant_pred_mean_rmse 用同一批预测的平均值替代每条预测，只用于解释误差。图中圆点标出验证集选中的轮次。
+
 ## 复算 BACE 全测试集的偏差方向，追溯两条相同标签
 
 第一条命令使用仓库内已有的 300 条测试记录及三个种子的预测。第二条使用原 DeepChem bace.csv 和 2016 年论文的 ci6b00290_si_001.zip，从作者的 SDF 按 CID 对照 IC50、单位、关系和来源论文。两个文件可放在仓库外并传入对应路径。[DeepChem 文件](https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv) · [作者补充包](https://doi.org/10.1021/acs.jcim.6b00290.s001)
