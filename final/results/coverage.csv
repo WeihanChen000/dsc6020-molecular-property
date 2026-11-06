@@ -1,0 +1,9 @@
+dataset,seed,test_occurrences,distinct_records,distinct_scaffolds,gnn_closer,ties
+ESOL,3101,112,112,55,57,0
+ESOL,3102,112,112,47,58,0
+ESOL,3103,112,112,46,54,0
+ESOL,union,336,280,121,169,0
+Lipophilicity,3101,420,420,264,248,0
+Lipophilicity,3102,420,420,252,256,0
+Lipophilicity,3103,420,420,272,269,0
+Lipophilicity,union,1260,1130,708,773,0

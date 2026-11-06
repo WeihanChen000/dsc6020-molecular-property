@@ -1,34 +1,54 @@
-# 怎样核对结果
+# 怎样复核
 
-只看图表可以直接打开仓库里的 CSV。想核对某个具体分子，可以下载记录包，在对应实验目录里打开 `seed0_test_predictions.csv`，按 `sample_id` 查找。每行同时有实测值 `y_true` 和预测值 `y_pred`。[实验文件下载](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3)
+## 只用 Python 看清 0.7330 从哪里来
 
-| 文件 | 什么时候用 |
-|---|---|
-| `study-v3-records.zip` | 包含训练代码、已缓存的分子特征、训练成员、各候选的验证记录、结果图表和逐分子预测。 |
-| `molecular-study-v3-selected-checkpoints.zip` | 包含选中模型的权重和缩放器。重载核验和下方完整复跑命令会用到。 |
-| `SHA256SUMS.txt` | 核对两个下载包的 SHA256。Windows 上可使用 `Get-FileHash 文件名`。 |
+下载仓库或用 Git 克隆后，在仓库根目录运行下面的 PowerShell 命令。它只读一份公开 CSV，用 ESOL 骨架划分 3102 的 112 个测试分子复算 RMSE。列名 rdkit_mlp 是原 210 项描述符，without_ipc 是去掉 Ipc 后重新训练的预测。
 
-把两个压缩包解压到同一个空目录，合并其中的 `results/` 和 `inherited_v2/`。解压后，`verify.py`、`inputs/` 和这两个结果目录应当在同一层。下面的命令从这个目录运行。
+```powershell
+@"
+import csv, math
+with open('final/results/predictions.csv', encoding='utf-8') as f:
+    rows = [r for r in csv.DictReader(f) if r['context'] == 'ESOL_random_scaffold_split3102']
+print('n =', len(rows))
+for m in ['train_mean', 'dmpnn', 'molformer_mlp', 'rdkit_mlp', 'without_ipc']:
+    mse = sum((float(r[m]) - float(r['y_true']))**2 for r in rows) / len(rows)
+    print(m, round(math.sqrt(mse), 4))
+"@ | python -
+```
 
-## 核对保存的预测
+预期输出依次为 112 条，以及 3.4469、0.8603、0.9259、0.7330、0.6854。若只想看哪些分子误差大，可直接筛选[逐分子预测表](final/results/predictions.csv)。
 
-原实验环境为 Windows、Python 3.12.10 和 CPU 版 PyTorch。用 PowerShell 建环境并安装锁定版本：
+## 重算所有成绩，再重画主图
+
+原实验使用 Windows、Python 3.12 和 CPU 版 PyTorch。先按锁定版本安装环境，然后把公开预测复制到空目录；此步只重算图表。
 
 ```powershell
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
-.\.venv\Scripts\python.exe audit_provenance.py
-.\.venv\Scripts\python.exe verify.py --stage all
+.\.venv\Scripts\python.exe -m pip install -r study/requirements-lock.txt
+New-Item -ItemType Directory -Force check | Out-Null
+Copy-Item final/results/predictions.csv check/
+.\.venv\Scripts\python.exe final/summarize.py check
 ```
 
-第一项检查逐条对齐原始分子和标签，并核对第二轮继承文件的哈希。第二项重载第三轮的选中模型，检查划分、预处理、预测和误差。本机原记录为 679 次拟合、187 个选中模型和 115,244 条验证或测试预测。[核验记录](study/verification_all.json)
+## 从保存的模型重建预测，或重新训练
 
-## 从固定输入重新训练
+下载旧版数据包 study-v3-records.zip，以及本版的 descriptor-runs.zip。先把两个包分别解压到 records 和 weights。前者顶层应能看到 core.py 和 inputs，后者顶层应有 all 和 no_ipc。数据包含训练成员、特征缓存和 D-MPNN、MoLFormer 的既有预测。本版模型包含第四轮和第五轮的全部 48 个候选文件夹、缩放器、曲线和验证选参记录。[数据包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3) · [两组描述符模型](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v5)
 
 ```powershell
-.\.venv\Scripts\python.exe run_new.py --workers 1
+.\.venv\Scripts\python.exe final/analyze.py --study records --runs weights --full weights/all --out checked
 ```
 
-新结果写到 `runs/` 下的时间戳目录。原实验最多使用三个训练进程，五个阶段累计约 62 分钟，单进程耗时会有所不同。包中已经有冻结的 MoLFormer 向量，可以直接重跑下游训练。重载同一检查点可复算预测，从头训练的 GNN 轨迹会有浮点和训练过程差异，其具体来源仍待核查。
+这一步从训练分区重算均值，重载 12 个入选的去 Ipc 模型，核对验证与测试预测，并对齐另外三条路线的已存预测。完整输入特征以样本 ID 对齐。模型包的 SHA256 为 `109ebed4c84716259de0fdf95bf7d914b090df2efab1b930f814435346a9e2e9`。
 
-数据来自 MoleculeNet。模型使用 `ibm-research/MoLFormer-XL-both-10pct`，固定版本和源文件哈希记录在清单里。D-MPNN 使用 Chemprop 2.2.1 的消息传递、聚合和预测组件。[数据来源](https://pubs.rsc.org/en/content/articlehtml/2018/sc/c7sc02664a) · [MoLFormer 模型卡](https://huggingface.co/ibm-research/MoLFormer-XL-both-10pct) · [版本清单](study/model_source_manifest.json)
+要从头训练两种描述符模型，可以另外指定一个空输出目录。代码按原训练索引和验证 RMSE 选参，CPU 浮点运算可能带来细微的重训差异。
+
+```powershell
+foreach ($variant in 'all','no_ipc') {
+    foreach ($dataset in 'ESOL','Lipophilicity') {
+        .\.venv\Scripts\python.exe final/train.py $dataset --study records --variant $variant --output retrained
+    }
+}
+.\.venv\Scripts\python.exe final/analyze.py --study records --runs retrained --full retrained/all --out rechecked
+```
+
+D-MPNN、冻结 MoLFormer 和早期小样本实验的运行方法见[第三轮复现说明](REPRODUCE-v3.md)。

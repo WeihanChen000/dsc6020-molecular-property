@@ -1,0 +1,13 @@
+dataset,context,dataset_n,dataset_scaffolds,training_n,test_n,test_scaffolds,forced_training_scaffolds,forced_training_rows
+ESOL,ESOL_random_group_split3101,1128,269,904,112,45,2,571
+ESOL,ESOL_random_group_split3102,1128,269,904,112,48,2,571
+ESOL,ESOL_random_group_split3103,1128,269,904,112,50,2,571
+ESOL,ESOL_random_scaffold_split3101,1128,269,904,112,55,2,571
+ESOL,ESOL_random_scaffold_split3102,1128,269,904,112,47,2,571
+ESOL,ESOL_random_scaffold_split3103,1128,269,904,112,46,2,571
+Lipophilicity,Lipophilicity_random_group_split3101,4200,2408,3360,420,359,0,0
+Lipophilicity,Lipophilicity_random_group_split3102,4200,2408,3360,420,350,0,0
+Lipophilicity,Lipophilicity_random_group_split3103,4200,2408,3360,420,343,0,0
+Lipophilicity,Lipophilicity_random_scaffold_split3101,4200,2408,3360,420,264,0,0
+Lipophilicity,Lipophilicity_random_scaffold_split3102,4200,2408,3360,420,252,0,0
+Lipophilicity,Lipophilicity_random_scaffold_split3103,4200,2408,3360,420,272,0,0
