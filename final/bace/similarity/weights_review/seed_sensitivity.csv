@@ -1,0 +1,4 @@
+seed,record_mse_gap,scaffold_mse_gap,reweighting_change,record_omissions_gnn_wins,record_omissions_lm_wins,record_omissions_ties,scaffold_omissions_gnn_wins,scaffold_omissions_lm_wins,scaffold_omissions_ties
+0,-0.09744462030954959,0.012848093687541026,0.11029271399709062,183,0,0,13,170,0
+1,0.10824876304030791,0.2253176956891971,0.11706893264888919,0,183,0,0,183,0
+2,0.605823275795047,0.8400420231431713,0.2342187473481243,0,183,0,0,183,0

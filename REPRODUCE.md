@@ -1,5 +1,15 @@
 # 怎样复核
 
+## 用公开预测复算 BACE 种子 0 的排名变化
+
+在仓库根目录运行以下命令，只需 Python 标准库。脚本读取相似分组实验已经公开的预测，按骨架汇总平方误差，与主表核对两个模型在三个种子下的两种 RMSE，然后逐个去掉骨架重算差值。
+
+```powershell
+python final/bace/similarity/scaffold_weights.py --out checked-scaffold-weights
+```
+
+seed0_scaffolds.csv 每行对应一种骨架，两个模型名下的数值均为该骨架内的 MSE。record_contribution 与 scaffold_contribution 分别是它对两种总体 MSE 差的贡献；weight_shift 是后者减前者。差值统一为 D-MPNN 减 MoLFormer。seed_sensitivity.csv 汇总每次仅去掉一种骨架后的胜负次数。[仓库中的输出](final/bace/similarity/weights_review)
+
 ## BACE 相似组整组留出
 
 使用下文的同一份 bace.csv、第三轮的 records 目录、相同的锁定环境。把原 BACE 包解压到 bace-runs，这次只借用里面按 ID 存放的冻结向量。两种模型都用新分区重新训练。要复算发布的权重，把新包解压到 grouped-runs，其顶层应直接有 dmpnn 和 mlp 两个目录。[原 BACE 包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v7) · [相似分组模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v8)
