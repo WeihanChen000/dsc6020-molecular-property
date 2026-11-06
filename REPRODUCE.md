@@ -1,5 +1,15 @@
 # 怎样复核
 
+## 对照 13 种骨架在三个种子下的表现
+
+用项目的 Python 环境运行下面的命令。输入是仓库里已发布的测试预测、最近邻相似度和主评分表。RDKit 用于读取骨架重原子数和环数，无环记录的 Murcko 骨架按空结构计数。
+
+```powershell
+.\.venv\Scripts\python.exe final/bace/similarity/flip_profile.py --out checked-flip13
+```
+
+flip13.csv 固定种子 0 的 13 种骨架，三列分别对应三个种子；正值表示删组后 MoLFormer 的相对优势缩小。flip_cohorts.csv 给出 13 种与其余 170 种的描述统计。scaffold_influence.csv 保留全部 549 行，模型偏差是预测值减实测值，rank_for_lm 按有符号影响降序，rank_absolute 按影响绝对值降序。[13 组对照](final/bace/similarity/weights_review/flip13.csv)
+
 ## 用公开预测复算 BACE 种子 0 的排名变化
 
 在仓库根目录运行以下命令，只需 Python 标准库。脚本读取相似分组实验已经公开的预测，按骨架汇总平方误差，与主表核对两个模型在三个种子下的两种 RMSE，然后逐个去掉骨架重算差值。
