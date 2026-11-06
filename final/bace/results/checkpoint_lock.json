@@ -1,0 +1,23 @@
+{
+  "dmpnn/seed0_lr0.001": {
+    "model.pt": "5b22519b2e899e6193a6bcb3edb028f6354095107882ff4fe82c26bca1605610"
+  },
+  "dmpnn/seed1_lr0.001": {
+    "model.pt": "5fdc1e7296ad7c0af3bfe8b36d49d7a89b5c2727241b2e0187e612b89015953a"
+  },
+  "dmpnn/seed2_lr0.001": {
+    "model.pt": "e7d2bd95c1fdb9c0f4673438838a4253b826072cff46462724c80e71b6828197"
+  },
+  "mlp/seed0_lr0.0003": {
+    "model.pt": "cb4727d0f4c68a574e286510467f0eaafa6afe84d9c88cae7177629a2a875590",
+    "preprocessor.joblib": "62acce49cb020a134c0ba1b08e29760b43759ba8c41a713c980a2931a84c4614"
+  },
+  "mlp/seed1_lr0.0003": {
+    "model.pt": "828bb49bde17f33bcdb474eeef3d54c1c864093ef97a658a95fb9369c6690ecd",
+    "preprocessor.joblib": "62acce49cb020a134c0ba1b08e29760b43759ba8c41a713c980a2931a84c4614"
+  },
+  "mlp/seed2_lr0.0003": {
+    "model.pt": "d7ca51ff3a99212f186a2b7cce348e108667290d6bb30a6b2e018e6fe1f04027",
+    "preprocessor.joblib": "62acce49cb020a134c0ba1b08e29760b43759ba8c41a713c980a2931a84c4614"
+  }
+}

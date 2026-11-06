@@ -1,6 +1,26 @@
 # 分子性质预测实验报告
 
-两项任务分别预测实测水溶性（ESOL，log mol/L）和亲脂性（Lipophilicity，pH 7.4 下的 logD）。主比较使用 Chemprop D-MPNN 和冻结的 MoLFormer，两者都用训练标签学习回归。作为参照，我们还让小型 MLP 读取 RDKit 描述符，并计算只输出训练标签平均值的基线。每个划分内，测试 ID、实验标签和评分方式相同。RMSE 对大偏差更敏感，MAE 给每条记录的绝对偏差相同权重。
+我们先在 ESOL 和 Lipophilicity 上比较两条路线，一条用 Chemprop D-MPNN 从分子图学习，另一条固定 MoLFormer，用它的向量训练回归头。前两项任务分别预测实测水溶性（log mol/L）和亲脂性（pH 7.4 下的 logD），另设 RDKit 描述符对照。第三项任务换成 BACE-1 抑制活性（pIC50），只做事先约定的两模型对照和训练均值基线。每个任务内，两条路线使用同一批测试记录。
+
+## 亲脂性上的排名能延伸到 BACE-1 抑制活性吗？
+
+**这批新骨架给出了相反的排名。** 如果 D-MPNN 在亲脂性上的优势能延续，三个训练种子按记录、按骨架计分都应是它领先，并优于只报训练均值的基线。这是训练前写下的判据。结果六项比较全由冻结 MoLFormer + MLP 领先，两条路线都好于均值基线。[训练前的提交](https://github.com/WeihanChen000/dsc6020-molecular-property/commit/7bdeb2c6a2e404ab18d7f9ba2124e135dff2e341)
+
+| 训练种子 | 按记录 RMSE，D-MPNN | 按记录 RMSE，MoLFormer | 按骨架 RMSE，D-MPNN | 按骨架 RMSE，MoLFormer | D-MPNN 绝对误差较小的记录 |
+|---|---:|---:|---:|---:|---:|
+| 0 | 0.8052 | 0.7183 | 0.9174 | 0.7773 | 149 / 300 |
+| 1 | 0.8026 | 0.7499 | 0.8827 | 0.7769 | 155 / 300 |
+| 2 | 0.8327 | 0.7370 | 0.9337 | 0.7840 | 146 / 300 |
+
+如果对所有分子都预测训练集的平均活性，按记录计分的 RMSE 是 1.2282，按骨架计分是 1.3883。
+
+逐条看，两种模型各有约一半预测更接近实测值。差距在大偏差上更明显。以种子 0 为例，绝对误差超过 1.5 个 pIC50 单位的记录，D-MPNN 有 22 条，MoLFormer 有 7 条。这是看完成绩后的描述。改看对大偏差较不敏感的 MAE，三个种子也都是 MoLFormer 较低（0.567–0.588，对应 D-MPNN 的 0.617–0.639）。[逐条预测](final/bace/results/predictions.csv) · [全部指标](final/bace/results/scores.csv)
+
+**这批分子怎么选？** 我们先核对候选集与旧数据的分子连接结构。FreeSolv 的 642 条记录排除重叠后剩 270 条。BACE 的 1,513 条只需排除 10 条，剩下的记录有 667 种骨架，也把预测对象从物理化学性质换成了酶抑制活性。按无手性骨架整组划分，训练、验证、测试分别有 1,053、150、300 条记录。测试集覆盖 124 种训练中未见的骨架，最大的一组占 55 条。按骨架计分时，先在每组内算均方误差，再对 124 组取平均、开平方。[分区成员](final/bace/partitions.csv) · [BACE 回归数据说明](https://deepchem.readthedocs.io/en/latest/api_reference/moleculenet.html#deepchem.molnet.load_bace_regression)
+
+两条路线各试两个学习率，只用验证 RMSE 选参。D-MPNN 选中 0.001，MoLFormer 回归头选中 0.0003。各自固定学习率再训练种子 1、2，共拟合八次。全部选定后，重载六个模型，对同一批测试分子评分。冻结编码器完整读入了全部 1,503 条分子字符串，最长 176 个 token，未遇到词表外 token。[八次训练记录](final/bace/results/training.csv) · [评分与输入核验](final/bace/results/verification.json)
+
+三个任务放在一起，亲脂性上 D-MPNN 的优势经得住换种子，ESOL 的排名随划分和计分方式变化，而在这批 BACE 骨架上冻结 MoLFormer 更准。三次训练只检验重新训练带来的波动，BACE 只留出过一批骨架。两条路线都用 BACE 训练标签重新拟合，MoLFormer 预训练语料与 BACE 的结构重叠程度也未知。由此能判断本次模型排名换了方向，还无法判断究竟是预训练、表征还是数据构成造成了差异。
 
 ## 换训练种子后，亲脂性的优势还在吗？
 

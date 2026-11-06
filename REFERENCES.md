@@ -1,6 +1,6 @@
 # 参考文献与实验设计
 
-下面列出选数据集、模型和划分方法时查阅的八篇研究，以及各自适用的任务。
+下面列出选择数据集、模型和划分方法时用到的研究。
 
 ### [1] MoleculeNet：数据集和任务来源
 
@@ -65,3 +65,7 @@ van Tilborg, Alenicheva & Grisoni. *Exposing the Limitations of Molecular Machin
 论文事实：考察结构相近但生物活性差异较大的分子对，说明整体指标可能遮蔽特定困难样本。
 
 对本项目的意义：可以借鉴“分组评价＋真实失败案例”。ESOL/Lipophilicity 不是这篇论文的靶点活性任务；单个高误差分子也不是一对分子。因此当前案例不能直接命名为 activity cliff。若做性质突变分析，需另行定义相似度、性质差阈值和观测单位。
+
+### [9] 第三个数据集的 BACE-1 抑制活性来自哪里？
+
+BACE 数据提供同一靶点的连续活性值和二分类标签。我们的第三项任务读取分子结构，用实验 pIC50 训练回归模型。原表另有作者的分区标记。为检验两条模型路线在留出骨架上的排名，我们事先另行固定了分区。报告中的数值对应本组协议。[原始研究（JCIM，2016）](https://doi.org/10.1021/acs.jcim.6b00290) · [DeepChem 的 BACE 回归数据说明](https://deepchem.readthedocs.io/en/latest/api_reference/moleculenet.html#deepchem.molnet.load_bace_regression)

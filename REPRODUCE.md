@@ -1,5 +1,27 @@
 # 怎样复核
 
+## 复算 BACE 的独立验证
+
+想看某条记录的预测，可以打开[测试预测表](final/bace/results/predictions.csv)，用 sample_id 对照[分区表](final/bace/partitions.csv)。例如 BACE_0000 对应原数据的第 0 行，从首条数据开始计数。三个种子共用测试 ID。
+
+要从模型重新得到整张表，先按下文装好环境。把第三轮数据包解压到 records，把 bace-runs.zip 解压到 bace-runs，解压后应直接看到 dmpnn 和 mlp 两个目录。模型包保留了八次拟合的权重、训练曲线、验证预测，以及按样本 ID 保存的冻结向量。下载原始 CSV 后，在仓库根目录执行下列命令。[第三轮数据包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3) · [BACE 模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v7)
+
+```powershell
+curl.exe -fL https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv -o bace.csv
+.\.venv\Scripts\python.exe final/bace/evaluate.py --raw bace.csv --study records --runs bace-runs --out checked-bace
+```
+
+预期打印三个种子的成绩，最后一项为 `reversed`。脚本核对原始文件、预设分区和训练配置，检查八次拟合的验证记录，然后重载六个入选模型。我们从解压包重建了结果，五份输出与仓库结果逐字节相同，又单独用公开预测复算了 RMSE、骨架等权 RMSE 和 MAE。模型包 SHA256 为 `12788de198d257cdf3b545732de7e131d27b2d3ce7e35cb0d29bbe14fd19957c`。
+
+若要从头训练，先按仓库的 IBM 文件清单下载编码器。下面的命令用同一份原始 CSV 和第三轮数据目录，写入新的 retrained-bace 目录。训练代码只读取训练和验证记录的标签。
+
+```powershell
+.\.venv\Scripts\python.exe -c "import json; from huggingface_hub import snapshot_download; m=json.load(open('study/model_source_manifest.json')); snapshot_download(m['repository'],revision=m['revision'],allow_patterns=[f['filename'] for f in m['files']],local_dir='models/molformer')"
+.\.venv\Scripts\python.exe final/bace/train.py dmpnn --raw bace.csv --study records --out retrained-bace
+.\.venv\Scripts\python.exe final/bace/train.py mlp --raw bace.csv --study records --out retrained-bace --model models/molformer --manifest study/model_source_manifest.json
+.\.venv\Scripts\python.exe final/bace/evaluate.py --raw bace.csv --study records --runs retrained-bace --out retrained-scores
+```
+
 ## 只用 Python 看清 0.7330 从哪里来
 
 下载仓库或用 Git 克隆后，在仓库根目录运行下面的 PowerShell 命令。它只读一份公开 CSV，用 ESOL 骨架划分 3102 的 112 个测试分子复算 RMSE。列名 rdkit_mlp 是原 210 项描述符，without_ipc 是去掉 Ipc 后重新训练的预测。

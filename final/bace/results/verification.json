@@ -1,0 +1,19 @@
+{
+  "verdict": "reversed",
+  "fits": 8,
+  "selected_models": 6,
+  "split_sha256": "c222bfa582e1203b0bca237c29c93067a1e9016b51f20ba1a126b069a57579aa",
+  "train_n": 1053,
+  "valid_n": 150,
+  "test_n": 300,
+  "test_scaffolds": 124,
+  "token_audit": {
+    "revision": "7b12d946c181a37f6012b9dc3b002275de070314",
+    "n": 1503,
+    "dimension": 768,
+    "max_length": 176,
+    "over_202": 0,
+    "unknown_tokens": 0,
+    "rows_with_unknown": 0
+  }
+}
