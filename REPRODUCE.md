@@ -52,3 +52,27 @@ foreach ($variant in 'all','no_ipc') {
 ```
 
 D-MPNN、冻结 MoLFormer 和早期小样本实验的运行方法见[第三轮复现说明](REPRODUCE-v3.md)。
+
+## 固定骨架划分，复核训练种子 0、1、2
+
+仓库里的逐分子预测已经按测试 ID 对齐。按前文安装环境后，在仓库根目录运行：
+
+```powershell
+.\.venv\Scripts\python.exe final/seeds/summarize.py final/seeds/results/predictions.csv check-seeds
+```
+
+输出的 scores.csv 每行对应同一划分和同一训练种子的成对结果；scaffold_rmse 先在每个骨架内求均方误差，再对骨架取平均并开平方。split_summary.csv 的标准差只表示同一划分内三次训练的波动。seed_comparison.png 可和首页图对照。
+
+若要核验检查点，把[种子复核模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v6)解压到 seed-weights，把[第三轮数据包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3)解压到 records。前者顶层为六个划分目录，后者含 core.py、inputs 和 results。下列命令读取种子 0 的原始结果，并重新载入种子 1、2 的全部 24 个检查点，核对验证与测试预测。
+
+```powershell
+.\.venv\Scripts\python.exe final/seeds/collect.py --study records --runs seed-weights --reference final/results/predictions.csv --out checked-seeds
+```
+
+如需从头训练，将输出写到一个空目录。每个模型沿用本划分种子 0 已选定的学习率，早停只看本次验证集。训练完后将上一条命令的 --runs 改为 seed-rerun 即可复算。
+
+```powershell
+foreach ($split in 3101,3102,3103) {
+    .\.venv\Scripts\python.exe final/seeds/train.py --study records --out seed-rerun --split $split
+}
+```

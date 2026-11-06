@@ -1,0 +1,8 @@
+{
+  "new_checkpoints": 24,
+  "new_validation_files_rescored": 24,
+  "new_test_files_rescored": 24,
+  "seed0_prediction_files_checked_against_previous_report": 12,
+  "paired_split_and_seed_conditions": 18,
+  "paired_test_record_appearances": 4788
+}
