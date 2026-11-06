@@ -4,9 +4,11 @@
 
 **到了 BACE-1 抑制活性，领先的模型换了。** 我们在训练前写下预测：如果亲脂性上的优势能延续，D-MPNN 在留出的新骨架上也应更准。实际测了 300 条记录，三个训练种子都是冻结 MoLFormer + MLP 的误差更低。按记录计分，它的 RMSE 为 0.718–0.750，D-MPNN 为 0.803–0.833。让 124 种测试骨架各占一票，仍是 MoLFormer 领先。三个种子用的是同一批骨架。[训练前锁定的协议与分区](https://github.com/WeihanChen000/dsc6020-molecular-property/commit/7bdeb2c6a2e404ab18d7f9ba2124e135dff2e341) · [BACE 逐次成绩](final/bace/results/scores.csv)
 
+**BACE 的测试分子和训练分子究竟像不像？** 虽然训练集和测试集按骨架分开，300 条测试记录中仍有 258 条能在训练集中找到指纹相似度至少为 0.6 的分子。直接照搬最近邻的活性，RMSE 是 0.906，两个神经模型都更准。把 124 种测试骨架逐个拿掉重算，也找不到单独去掉就能翻转排名的一组。[最近邻和逐骨架检查](RESULTS.md#bace-测试分子离训练集有多远)
+
 **在亲脂性上，D-MPNN 的优势经得住换种子。** 三批留出骨架，每批固定测试分子，把两个模型各训练三次。九次比较中，D-MPNN 的 RMSE 都更低。把计分单位从分子换成骨架，九次仍然都是 D-MPNN 领先。水溶性的结果更挑条件，尤其是含有大骨架组的测试集。
 
-![三组训练种子下两个模型的 RMSE 差，左图按分子记录等权，右图按骨架等权](final/seeds/results/seed_comparison.png)
+![水溶性和亲脂性的三组训练种子下两个模型的 RMSE 差，左图按分子记录等权，右图按骨架等权](final/seeds/results/seed_comparison.png)
 
 每行是一批测试分子，三个点是训练种子 0、1、2。点在零线右边，表示 D-MPNN 更准；在左边，表示冻结 MoLFormer + MLP 更准。亲脂性三批测试集合计覆盖 708 种不同骨架，水溶性覆盖 121 种。换种子时测试集保持固定。[分模型成绩和逐次差值](final/seeds/results/scores.csv) · [逐分子预测](final/seeds/results/predictions.csv)
 
@@ -14,4 +16,4 @@
 
 **一个描述符会带来多大影响？** RDKit 描述符接 MLP 本来是个有竞争力的对照，直到它把一个实测 logD 为 −0.94 的分子预测成约 7,665 万。删去 Ipc 这一列并从头训练后，该分子的预测降到 −13.27，仍是该组误差最大的分子。其余 419 个分子的 RMSE 略降，平均绝对误差却略升。[去 Ipc 的逐划分对照](final/results/ablation.csv)
 
-[完整报告和 12 组成绩](RESULTS.md) · [逐分子预测](final/results/predictions.csv) · [五分钟复算一个结果](REPRODUCE.md) · [小样本、预测头和早期实验](RESULTS-v3.md) · [参考文献](REFERENCES.md)
+[三个任务的完整报告](RESULTS.md) · [水溶性和亲脂性的逐分子预测](final/results/predictions.csv) · [五分钟复算一个结果](REPRODUCE.md) · [随机森林基线、小样本和预测头对照](RESULTS-v3.md) · [参考文献](REFERENCES.md)

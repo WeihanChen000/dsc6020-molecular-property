@@ -45,8 +45,12 @@ def evaluate(a):
             folder=base/f"seed{t['seed']}_lr{t['lr']}"
             locked[f"{route}/{folder.name}"]={f.name:digest(f) for f in folder.iterdir()
                                               if f.name in {"model.pt","preprocessor.joblib"}}
-    a.out.mkdir(parents=True,exist_ok=True)
     assert len(locked)==6 and len(fits)==8
+    if a.published_weights:
+        expected = json.loads((HERE / "results/checkpoint_lock.json").read_text())
+        if locked != expected:
+            raise ValueError("Selected checkpoint files differ from the published BACE run")
+    a.out.mkdir(parents=True,exist_ok=True)
     core.dump(a.out/"checkpoint_lock.json",locked)
     labels=pd.read_csv(a.raw,usecols=["pIC50"]).pIC50.loc[data.index].to_numpy()
     assert np.isfinite(labels).all()
@@ -97,4 +101,6 @@ def evaluate(a):
 if __name__=="__main__":
     p=argparse.ArgumentParser()
     for arg in ["raw","study","runs","out"]:p.add_argument("--"+arg,type=Path,required=True)
+    p.add_argument("--published-weights", action="store_true",
+                   help="Verify archived checkpoints against the repository before scoring")
     evaluate(p.parse_args())

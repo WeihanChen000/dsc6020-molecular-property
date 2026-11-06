@@ -8,12 +8,12 @@
 
 ```powershell
 curl.exe -fL https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv -o bace.csv
-.\.venv\Scripts\python.exe final/bace/evaluate.py --raw bace.csv --study records --runs bace-runs --out checked-bace
+.\.venv\Scripts\python.exe final/bace/evaluate.py --raw bace.csv --study records --runs bace-runs --out checked-bace --published-weights
 ```
 
 预期打印三个种子的成绩，最后一项为 `reversed`。脚本核对原始文件、预设分区和训练配置，检查八次拟合的验证记录，然后重载六个入选模型。我们从解压包重建了结果，五份输出与仓库结果逐字节相同，又单独用公开预测复算了 RMSE、骨架等权 RMSE 和 MAE。模型包 SHA256 为 `12788de198d257cdf3b545732de7e131d27b2d3ce7e35cb0d29bbe14fd19957c`。
 
-若要从头训练，先按仓库的 IBM 文件清单下载编码器。下面的命令用同一份原始 CSV 和第三轮数据目录，写入新的 retrained-bace 目录。训练代码只读取训练和验证记录的标签。
+复核公开包时，`--published-weights` 会在加载权重前，把六个入选模型及其预处理文件与仓库记录的 SHA256 逐项对照。若要从头训练，先按仓库的 IBM 文件清单下载编码器。下面的命令用同一份原始 CSV 和第三轮数据目录，写入新的 retrained-bace 目录。训练代码只读取训练和验证记录的标签。
 
 ```powershell
 .\.venv\Scripts\python.exe -c "import json; from huggingface_hub import snapshot_download; m=json.load(open('study/model_source_manifest.json')); snapshot_download(m['repository'],revision=m['revision'],allow_patterns=[f['filename'] for f in m['files']],local_dir='models/molformer')"
@@ -21,6 +21,16 @@ curl.exe -fL https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv -
 .\.venv\Scripts\python.exe final/bace/train.py mlp --raw bace.csv --study records --out retrained-bace --model models/molformer --manifest study/model_source_manifest.json
 .\.venv\Scripts\python.exe final/bace/evaluate.py --raw bace.csv --study records --runs retrained-bace --out retrained-scores
 ```
+
+## 复算 BACE 最近邻和逐骨架检查
+
+这一项只需上面的原始 bace.csv、仓库里的分区与预测，以及已安装的 RDKit、NumPy 和 pandas。在仓库根目录运行以下命令。
+
+```powershell
+.\.venv\Scripts\python.exe final/bace/review.py --raw bace.csv --out checked-bace-review
+```
+
+输出三张表。neighbors.csv 列出 300 条测试记录各自最相似的训练记录，并列时保留全部 ID。scores.csv 按相似度分档，all 行可与主报告核对。omit_one_scaffold.csv 每行去掉一个测试骨架，差值为 D-MPNN 的 RMSE 减去 MoLFormer 的 RMSE。可将输出与[仓库里的三张表](final/bace/review)对照。
 
 ## 只用 Python 看清 0.7330 从哪里来
 
