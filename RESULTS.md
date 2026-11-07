@@ -1,6 +1,25 @@
 # 分子性质预测实验报告
 
-我们先在 ESOL 和 Lipophilicity 上比较两条路线，一条用 Chemprop D-MPNN 从分子图学习，另一条固定 MoLFormer，用它的向量训练回归头。前两项任务分别预测实测水溶性（log mol/L）和亲脂性（pH 7.4 下的 logD），另设 RDKit 描述符对照。第三项任务换成 BACE-1 抑制活性（pIC50），只做事先约定的两模型对照和训练均值基线。每个任务内，两条路线使用同一批测试记录。
+我们先在 ESOL 和 Lipophilicity 上比较两条路线，一条用 Chemprop D-MPNN 从分子图学习，另一条固定 MoLFormer，用它的向量训练回归头。前两项任务分别预测实测水溶性（log mol/L）和亲脂性（pH 7.4 下的 logD），另设 RDKit 描述符对照。第三项任务换成 BACE-1 抑制活性（pIC50）。先比较这两个模型和训练均值基线，后来又在相似组划分上补跑了通用语言模型 Qwen3-1.7B。
+
+## 冻结 Qwen 和 MoLFormer 在同一批 BACE 分子上表现如何
+
+我们给两个模型相同的 SMILES，预测实测 pIC50。在原有的相似组划分里，1,053 条记录用于训练，150 条用于选学习率和早停，余下 300 条覆盖 183 种骨架。Qwen3-1.7B 保持冻结，取最后一层有效 token 的平均向量，再用 MLP 输出数值；MoLFormer 沿用原实验保存的冻结向量和测试预测。两个回归头都有 128 个隐藏单元，学习率各试两个。Qwen 的输入为 2,048 维，回归头有 262,401 个参数；MoLFormer 的输入为 768 维，回归头有 98,561 个参数。两者的分词和向量提取方式也不同。[预先提交的实验协议](https://github.com/WeihanChen000/dsc6020-molecular-property/commit/d0c9190) · [Qwen 权重版本](https://huggingface.co/Qwen/Qwen3-1.7B/tree/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e)
+
+| 训练种子 | Qwen RMSE | MoLFormer RMSE | Qwen MAE | MoLFormer MAE | Qwen 骨架等权 RMSE | MoLFormer 骨架等权 RMSE |
+|---|---:|---:|---:|---:|---:|---:|
+| 0 | 1.169 | 1.228 | 0.907 | 0.983 | 1.208 | 1.253 |
+| 1 | 1.183 | 1.158 | 0.909 | 0.933 | 1.214 | 1.190 |
+| 2 | 1.207 | 1.163 | 0.939 | 0.950 | 1.247 | 1.201 |
+| 三次均值 | 1.186 | 1.183 | 0.918 | 0.955 | 1.223 | 1.215 |
+
+三次测试用的都是同一批分子。按原先选模型的指标 RMSE，两者平均只差 0.0034 pIC50，逐次排名会变；若每种骨架等权，逐次胜负也一样。两个模型在三个种子下的 RMSE 都低于直接预测训练均值的 1.521。[完整评分表](final/bace/qwen/results/scores.csv) · [同划分的均值基线](final/bace/similarity/results/scores.csv)
+
+为什么 Qwen 三次的 MAE 都更低，RMSE 却只赢一次？逐条看，Qwen 的预测比 MoLFormer 更靠近实测值的记录分别有 166、169、164 条，占各轮 300 条中的过半。再看各模型误差最大的 30 条，种子 2 下 Qwen 的平均绝对误差是 2.622，MoLFormer 是 2.377；种子 1 下分别为 2.591、2.403。RMSE 对这些大偏差更敏感。这里的 30 条由各模型各自的误差排序得到，用于解释成绩，选参时没有使用。[逐分子预测](final/bace/qwen/results/predictions.csv)
+
+**在 8 GB 笔记本显卡上实际花多久？** RTX 5060 Laptop 加载已下载的权重用时 2.33 秒，随后用 11.59 秒编码全部 1,503 条 SMILES，每批 8 条，最长 146 个 token，全程无需截断。PyTorch 峰值分配 3,348 MiB，峰值预留 3,388 MiB。开始前整卡已用 1,421 MiB，运行期间 40 次读数最高 4,940 MiB，整卡读数包含桌面和其他进程。缓存向量后，CPU 用 4 个线程完成四次回归头拟合和选参记录，共 11.93 秒。上述三个阶段合计约 26 秒，未计下载、校验文件、准备数据、解释器启动和最终评分。本轮复用了 MoLFormer 旧预测，因此只报告 Qwen 的本机耗时。[GPU 原始读数](final/bace/qwen/results/gpu.json) · [各次训练记录](final/bace/qwen/results/training.csv)
+
+这批结果支持把冻结 Qwen 留作通用语言模型对照。我们只试了一个已公开成绩的划分和一种 Qwen 池化方式。三个种子衡量的是回归头训练波动，不能说明换一批测试分子后谁会领先，也无法从这个实验推断通用模型和分子模型的预训练各贡献了多少。全程没有使用提示词生成数值，也没有做 QLoRA。[从权重重算](REPRODUCE.md) · [向量和回归头下载](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v9)
 
 ## 亲脂性上的排名能延伸到 BACE-1 抑制活性吗？
 

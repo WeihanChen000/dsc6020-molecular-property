@@ -1,5 +1,30 @@
 # 怎样复核
 
+## 在同一批 BACE 分子上比较冻结 Qwen 和 MoLFormer
+
+只想看两者对同一个分子的预测，打开[逐条对照表](final/bace/qwen/results/predictions.csv)，按 `sample_id` 和 `seed` 查找。要从回归头权重重算，用原实验的 CPU Python 环境即可。下载 [BACE 原始 CSV](https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv)、[第三轮数据包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3)和 [Qwen 实验包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v9)。从仓库根目录执行，假定第三轮包已解压到 `records`，Qwen 包已解压到 `qwen-bace`。
+
+```powershell
+$cpu = '.\.venv\Scripts\python.exe'
+$scripts = 'final/bace/qwen'
+$shared = @('--study','records','--raw','bace.csv','--features','qwen-bace/features')
+& $cpu "$scripts/heads.py" evaluate @shared --runs qwen-bace/heads --out checked-qwen
+```
+
+若要重新训练四个候选回归头，先执行 `fit`，再执行 `evaluate`，两步均把 `--runs` 换成一个新的空目录。评分脚本按样本 ID 核对标签和旧预测，也检查三个种子的 MoLFormer 分数能否重现。
+
+若要从原始结构重新生成 Qwen 向量，需要单独的 CUDA 环境。此次用 Python 3.12.10、PyTorch 2.11.0+cu128、Transformers 4.57.6、Accelerate 1.10.1、tokenizers 0.22.1、safetensors 0.6.2、NumPy 2.5.3 和 huggingface-hub 0.36.0。将 [Qwen 官方固定版本](https://huggingface.co/Qwen/Qwen3-1.7B/tree/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e)中[清单](final/bace/qwen/model_manifest.json)列出的文件放到 `Qwen3-1.7B`。下面的 `$gpu` 指向这个环境。编码器读取结构文件，不读取活性标签；它会逐个校验权重和 tokenizer 文件。
+
+```powershell
+$gpu = '.\.venv-gpu\Scripts\python.exe'
+& $cpu "$scripts/prepare.py" --raw bace.csv --study records --out structures.csv
+& $gpu "$scripts/encode.py" --model Qwen3-1.7B --structures structures.csv --out fresh-features
+```
+
+用新向量重新训练时，`--features` 传 `fresh-features`，再选一个空的回归头目录。发布的权重只和当时保存的向量配套。显存读数取自 GPU 编码阶段，CPU 训练耗时另记。
+
+发布包 SHA256 为 `e31bfe1fcdf8e1b3f38f0c2f45d92f153056cad620ae6fa854f1521ee0427a0d`。我们从解压后的包重载了三个入选回归头，重新生成的预测、成绩和训练表与仓库文件逐字节一致。若只想用标准库复算两种模型的 18 个评分，执行 `python final/bace/qwen/check_scores.py` 即可。
+
 ## 核对 BACE 的早停轮次和预测分布
 
 从相似组留出实验的发布页下载 grouped-runs.zip，放在仓库根目录。在项目 Python 环境中运行下面的命令，无需解压或训练。脚本校验压缩包摘要，从六个入选模型的逐轮日志定位验证 RMSE 最低点，再核对已发布的验证和测试 RMSE。[相似组模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v8)
