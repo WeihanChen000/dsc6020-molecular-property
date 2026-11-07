@@ -1,5 +1,7 @@
 # 怎样复核
 
+要核对哪些分子拉高了 Qwen 的 RMSE，在仓库根目录用已有的 CPU Python 环境执行 `python final/bace/qwen/error_review.py --out checked-qwen-errors`。脚本读取已发布的两模型预测、训练均值和原始成绩，按分子、骨架及实测活性分组。所有差值均按 Qwen 减 MoLFormer 计算。共同难例取种子 1、2 的配对平方误差差值各自前十名的交集；骨架表用成员中编号最小者作索引，按整组对逐分子误差的总贡献排名。[核对用的四张表](final/bace/qwen/error_review)
+
 ## 在同一批 BACE 分子上比较冻结 Qwen 和 MoLFormer
 
 只想看两者对同一个分子的预测，打开[逐条对照表](final/bace/qwen/results/predictions.csv)，按 `sample_id` 和 `seed` 查找。要从回归头权重重算，用原实验的 CPU Python 环境即可。下载 [BACE 原始 CSV](https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv)、[第三轮数据包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3)和 [Qwen 实验包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v9)。从仓库根目录执行，假定第三轮包已解压到 `records`，Qwen 包已解压到 `qwen-bace`。
