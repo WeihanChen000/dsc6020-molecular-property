@@ -1,5 +1,19 @@
 # 怎样复核
 
+## 用 992 条明确 IC50 训练记录复跑三条路线
+
+在仓库根目录使用已有 CPU 环境（Python 3.12.10、PyTorch 2.6.0+cpu、Chemprop 2.2.1）。准备原始 `bace.csv`，将第三轮 records 包、MoLFormer 的 BACE 包、Qwen 包分别解压到下列路径；沿用包里的训练器和冻结特征。若只想复算现有权重，从最后一个链接下载 `ic50-runs.zip`，解压到 `ic50-runs`，直接执行 `compare.py` 即可。[第三轮 records](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3) · [MoLFormer 向量](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v7) · [Qwen 向量](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v9) · [明确 IC50 模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v10)
+
+```powershell
+$common = @('--study','records','--raw','bace.csv','--qwen','qwen-bace/features/vectors.npz','--molformer','bace-runs/mlp/embeddings.npz','--runs','ic50-runs')
+python final/bace/ic50_only/fit_exact.py @common
+python final/bace/ic50_only/compare.py @common --out checked-ic50
+```
+
+从头训练时，`--runs` 指向空目录。拟合器读取已核对的名单，从原始 CSV 只读入选训练和验证行的标签；评分器在三个模型都保存选参记录后，校验模型文件并重载九个入选检查点。我们从发布包重载后，预测、训练表和评分表均与仓库逐字节一致。模型包 SHA256 为 `7512313551d8de63709715fd205ac25c106bdb24f3940268828adced5764c536`。[训练协议与结果](final/bace/ic50_only)
+
+## 复核测量类型和原预测
+
 核对整个 BACE 相似组划分时，用原始 `bace.csv`、作者补充压缩包和仓库里已有的测试预测即可。在仓库根目录、项目的 CPU Python 环境执行：
 
 ```powershell
