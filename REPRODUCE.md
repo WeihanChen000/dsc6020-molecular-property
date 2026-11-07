@@ -1,6 +1,8 @@
 # 怎样复核
 
-复核 Qwen 种子 0 的 56、11、64 号单元，在项目 CPU 环境运行下面这行。脚本读入保存的第一层和训练时的缩放器，按已发布的五个近邻 ID 逐维求和，再与 PyTorch 第一层的直接输出、上一轮的 ReLU 激活及其输出贡献核对。两种计算的绝对容差为 0.00001。逐维表按顺着该组总差方向的贡献降序排列，也可用贡献的绝对值排序查看反向项。[脚本](final/bace/ic50_only/input_gap.py) · [三张结果表](final/bace/ic50_only/input_gap)
+复核 Qwen 种子 0 的 56、11、64 号单元，在项目 CPU 环境运行下面这行。脚本读入保存的第一层和训练时的缩放器，按已发布的五个近邻 ID 逐维求和，再与 PyTorch 第一层的直接输出、上一轮的 ReLU 激活及其输出贡献核对。两种计算的绝对容差为 0.00001。逐维表按顺着该组总差方向的贡献降序排列，也可用贡献的绝对值排序查看反向项。[脚本](final/bace/ic50_only/input_gap.py) · [结果表](final/bace/ic50_only/input_gap)
+
+同一条命令还会重算最少替换维数。每个分子、单元独立排序，贡献相同时先取维度编号小的。脚本构造从第 0 步到首次达标的每一条替换向量，把保存的第一层权重直接作用于这些向量，并核对与累加法首次达标的步数一致。阈值用未舍入的数值判断。最后用 0638 各单元的达标名单在 0070 上再算一次，替换值取自 0070 自己的近邻。[逐步替换](final/bace/ic50_only/input_gap/prefixes.csv) · [最小维数和对照](final/bace/ic50_only/input_gap/thresholds.csv)
 
 ```powershell
 python final/bace/ic50_only/input_gap.py --qwen qwen-bace/features/vectors.npz --heads ic50-runs --out checked-input-gap
