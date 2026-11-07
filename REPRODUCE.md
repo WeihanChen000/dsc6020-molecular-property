@@ -1,5 +1,13 @@
 # 怎样复核
 
+要复算种子 0 的排名变化，用下方已有的 Qwen 和明确 IC50 模型包，再解压[混合训练的 MoLFormer 模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v8)到 `grouped-runs`。在仓库根目录的项目 Python 环境执行以下命令，只读取候选训练曲线、验证预测和已发布的测试预测。
+
+```powershell
+python final/bace/ic50_only/seed_review.py --exact ic50-runs --qwen qwen-bace/heads --molformer grouped-runs/mlp --out checked-seed-review
+```
+
+测试表里 `exact_gap`、`mixed_gap` 都是 Qwen 平方误差减 MoLFormer 平方误差；`swing` 为前者减后者。骨架按测试记录对平方误差差值求和，`first_id` 是组内最小编号。验证表 `valid_shared147` 只对归档的候选最佳检查点复算，不重新选轮次。[四份核对表](final/bace/ic50_only/seed_review)
+
 ## 用 992 条明确 IC50 训练记录复跑三条路线
 
 在仓库根目录使用已有 CPU 环境（Python 3.12.10、PyTorch 2.6.0+cpu、Chemprop 2.2.1）。准备原始 `bace.csv`，将第三轮 records 包、MoLFormer 的 BACE 包、Qwen 包分别解压到下列路径；沿用包里的训练器和冻结特征。若只想复算现有权重，从最后一个链接下载 `ic50-runs.zip`，解压到 `ic50-runs`，直接执行 `compare.py` 即可。[第三轮 records](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v3) · [MoLFormer 向量](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v7) · [Qwen 向量](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v9) · [明确 IC50 模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v10)
