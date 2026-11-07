@@ -1,5 +1,11 @@
 # 怎样复核
 
+复核 Qwen 种子 0 的 56、11、64 号单元，在项目 CPU 环境运行下面这行。脚本读入保存的第一层和训练时的缩放器，按已发布的五个近邻 ID 逐维求和，再与 PyTorch 第一层的直接输出、上一轮的 ReLU 激活及其输出贡献核对。两种计算的绝对容差为 0.00001。逐维表按顺着该组总差方向的贡献降序排列，也可用贡献的绝对值排序查看反向项。[脚本](final/bace/ic50_only/input_gap.py) · [三张结果表](final/bace/ic50_only/input_gap)
+
+```powershell
+python final/bace/ic50_only/input_gap.py --qwen qwen-bace/features/vectors.npz --heads ic50-runs --out checked-input-gap
+```
+
 复核隐藏单元时，直接读取仓库内上一轮保存的五个近邻 ID、发布的冻结向量、缩放器和已选中的回归头。在项目 CPU 环境运行下面一行即可。脚本校验缓存和检查点的 SHA-256，关闭 dropout，用 PyTorch 回放六个头，再用 NumPy 从第一层权重独立计算激活及输出。它逐一核对 60 个近邻与目标的预测差，并将 12 组目标预测和近邻均值与上一轮对齐，绝对容差为 0.00001 pIC50。[脚本](final/bace/ic50_only/hidden_gap.py) · [三张输出表](final/bace/ic50_only/hidden_gap)
 
 ```powershell
