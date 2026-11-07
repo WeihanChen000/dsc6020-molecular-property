@@ -1,5 +1,13 @@
 # 怎样复核
 
+要找八条难例在 1,053 条训练记录中的最近邻，准备下文的原始 CSV、补充 SDF 压缩包和 [study-v7](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v7)、[study-v9](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v9) 的冻结向量。在已有 CPU 环境运行：
+
+```powershell
+python final/bace/qwen/training_neighbors.py --raw bace.csv --supplement ci6b00290_si_001.zip --qwen qwen-bace/features/vectors.npz --molformer bace-runs/mlp/embeddings.npz --out checked-training-neighbors
+```
+
+Morgan 指纹沿用原划分的半径 2、2,048 位和无手性输入；两种编码器分别在自身未标准化的冻结向量上计算余弦相似度。各自只比较训练样本。前五名若在边界同分则全部计入，各记录等权；余弦值仅用于各自模型内部排序。活性匹配使八对标签绝对差的总和最小，平局按有序 ID 和当前求解器返回的解保留。脚本校验原始文件和向量摘要，并核对 203 条低活性记录的最高指纹相似度是否与原报告一致。[输出表和结构图](final/bace/qwen/training_neighbors)
+
 要核对哪些分子拉高了 Qwen 的 RMSE，在仓库根目录用已有的 CPU Python 环境执行 `python final/bace/qwen/error_review.py --out checked-qwen-errors`。脚本读取已发布的两模型预测、训练均值和原始成绩，按分子、骨架及实测活性分组。所有差值均按 Qwen 减 MoLFormer 计算。共同难例取种子 1、2 的配对平方误差差值各自前十名的交集；骨架表用成员中编号最小者作索引，按整组对逐分子误差的总贡献排名。[核对用的四张表](final/bace/qwen/error_review)
 
 ## 在同一批 BACE 分子上比较冻结 Qwen 和 MoLFormer
