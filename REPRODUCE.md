@@ -1,5 +1,13 @@
 # 怎样复核
 
+核对整个 BACE 相似组划分时，用原始 `bace.csv`、作者补充压缩包和仓库里已有的测试预测即可。在仓库根目录、项目的 CPU Python 环境执行：
+
+```powershell
+python final/bace/qwen/assay_audit.py --raw bace.csv --supplement ci6b00290_si_001.zip --out checked-assays
+```
+
+脚本先核对源文件摘要、CID、发布标签和 1,503 条成员，再按种子和测试 ID 合并两份预测表，检查共有的 MoLFormer 预测是否一致。复现完整测试集成绩后，分别计算严格 IC50 子集和补入缺浓度值记录后的对照成绩。所有指标使用原实验的发布标签；换算浓度只用于检查标签来源。[原始 CSV](https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/bace.csv) · [作者补充压缩包](https://doi.org/10.1021/acs.jcim.6b00290.s001) · [核对结果](final/bace/qwen/assay_audit)
+
 要找八条难例在 1,053 条训练记录中的最近邻，准备下文的原始 CSV、补充 SDF 压缩包和 [study-v7](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v7)、[study-v9](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v9) 的冻结向量。在已有 CPU 环境运行：
 
 ```powershell

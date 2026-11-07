@@ -1,0 +1,7 @@
+category,train,valid,test
+Cell =,1,0,0
+IC50 =,992,147,268
+IC50 = incomplete source,16,0,1
+IC50 >,21,3,11
+Kd =,6,0,2
+Ki =,17,0,18
