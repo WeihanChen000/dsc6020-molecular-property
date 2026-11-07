@@ -1,5 +1,11 @@
 # 怎样复核
 
+复核隐藏单元时，直接读取仓库内上一轮保存的五个近邻 ID、发布的冻结向量、缩放器和已选中的回归头。在项目 CPU 环境运行下面一行即可。脚本校验缓存和检查点的 SHA-256，关闭 dropout，用 PyTorch 回放六个头，再用 NumPy 从第一层权重独立计算激活及输出。它逐一核对 60 个近邻与目标的预测差，并将 12 组目标预测和近邻均值与上一轮对齐，绝对容差为 0.00001 pIC50。[脚本](final/bace/ic50_only/hidden_gap.py) · [三张输出表](final/bace/ic50_only/hidden_gap)
+
+```powershell
+python final/bace/ic50_only/hidden_gap.py --qwen qwen-bace/features/vectors.npz --molformer bace-runs/mlp/embeddings.npz --study records --heads ic50-runs --out checked-hidden-gap
+```
+
 要复核 0638 和 0070 的训练近邻，使用本页的原始 CSV、作者补充压缩包、study-v3 训练器、study-v7／v9 向量和 study-v10 回归头。命令只计算指纹和相似度、重载缩放器和已入选的检查点。前一、五、十名若在边界并列则全收，邻居的实测值和模型输出均等权平均。模型对训练近邻的输出只供解释，不能当作测试成绩。[输出与结构图](final/bace/ic50_only/equal_activity_pair)
 
 ```powershell
