@@ -1,5 +1,11 @@
 # 怎样复核
 
+要复核 0638 和 0070 的训练近邻，使用本页的原始 CSV、作者补充压缩包、study-v3 训练器、study-v7／v9 向量和 study-v10 回归头。命令只计算指纹和相似度、重载缩放器和已入选的检查点。前一、五、十名若在边界并列则全收，邻居的实测值和模型输出均等权平均。模型对训练近邻的输出只供解释，不能当作测试成绩。[输出与结构图](final/bace/ic50_only/equal_activity_pair)
+
+```powershell
+python final/bace/ic50_only/equal_activity_pair.py --raw bace.csv --supplement ci6b00290_si_001.zip --qwen qwen-bace/features/vectors.npz --molformer bace-runs/mlp/embeddings.npz --study records --heads ic50-runs --out checked-equal-pair
+```
+
 要复算全测试集的高活性偏差和四条分子的异骨架匹配，在现有项目环境运行 `python final/bace/ic50_only/high_activity.py --out checked-high-activity`。脚本用 992 条训练标签的均值划分高低活性，上四分位数用于复核。匹配只读测试实测值、骨架和相似组；从目标相似组之外的候选挑出 12 种不同骨架，使四个目标各得三条且绝对活性差之和最小。同骨架内等距取较小编号，跨骨架平局沿用排序和现有 SciPy 求解器。±0.10 窗口使用全部合格记录，窗口之间可以重叠。预测统一取 `exact` 列。[统计表、匹配名单与逐对预测](final/bace/ic50_only/high_activity)
 
 复核 BACE_0638 组内十条记录时，在仓库根目录用项目 CPU 环境运行下列命令。脚本按 Murcko 骨架选成员，核对原始测量类型、浓度和 ID，从预测重算平方误差差值，与已发布的骨架总分核对。结构图以 1310 的完整连接结构对齐，高亮其余分子相对它多出的原子。所需原始文件链接见下文。[完整输出](final/bace/ic50_only/scaffold_0638)
