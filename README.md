@@ -1,6 +1,6 @@
 # 换一批分子骨架，GNN 和 MoLFormer 谁预测得更准？
 
-D-MPNN 在亲脂性上领先，换到 BACE 抑制活性，普通骨架划分下三次都是 MoLFormer 更准。水溶性介于两者之间，哪种模型领先要看测试集里有哪些骨架，以及每种骨架占多大权重。
+三个物理性质给出了不同的答案。亲脂性上 D-MPNN 九次都领先；水溶性更挑测试骨架；新增的 FreeSolv 水合自由能上，D-MPNN 按分子算赢八次，按骨架算只赢四次。最后用 BACE 酶抑制活性作扩展，检查这两条路线到了生物活性任务上表现如何。
 
 我们让 D-MPNN 从分子图学习，冻结 MoLFormer，把它读到的 SMILES 向量交给一个小型回归网络。两条路线在每个划分上都预测同一批测试分子，按验证集选参。以下比较测试 RMSE，越低越好。
 
@@ -8,11 +8,12 @@ D-MPNN 在亲脂性上领先，换到 BACE 抑制活性，普通骨架划分下�
 |---|---|
 | Lipophilicity · 亲脂性 | 在三批测试骨架上各训练三次，D-MPNN 九次都领先，RMSE 比 MoLFormer 低 0.069–0.202。改成每种骨架各占一票，九次仍领先。 |
 | ESOL · 水溶性 | 按分子计分，D-MPNN 赢 4/9；按骨架等权，它只赢 1/9。有一批测试集共 112 个分子，39 个属于同一种联苯骨架。 |
-| BACE · 酶抑制活性 | 普通骨架留出的 300 条记录上，MoLFormer 三次都更准，RMSE 为 0.718–0.750，D-MPNN 为 0.803–0.833。改为相似分子整组留出，按分子算 MoLFormer 赢 2/3，按骨架算赢 3/3。 |
+| FreeSolv · 水合自由能 | 三批留出骨架各跑三次。按分子算 D-MPNN 赢 8/9，按骨架等权赢 4/9。测试集分别有 31、29、17 种骨架，最大的两个骨架组始终在训练集。 |
+| 生物活性扩展 · BACE | 普通骨架留出的 300 条记录上，MoLFormer 三次都更准，RMSE 为 0.718–0.750，D-MPNN 为 0.803–0.833。改为相似分子整组留出，按分子算 MoLFormer 赢 2/3，按骨架算赢 3/3。 |
 
-![ESOL 和 Lipophilicity 各划分的 RMSE 差值，按分子和按骨架分别计分](final/seeds/results/seed_comparison.png)
+![三项物理性质的 RMSE 差值，各面板按本任务的单位绘制](final/freesolv/results/physical_tasks.png)
 
-图中每行是一批测试分子，三个点是三个训练种子。点在零线右边表示 D-MPNN 更准；同一行里的三个点共用测试集。[三个任务的主报告](RESULTS.md#三个任务上的模型比较) · [前两项任务逐次成绩](final/seeds/results/scores.csv) · [BACE 逐次成绩](final/bace/results/scores.csv)
+三个面板分别是水溶性、亲脂性和水合自由能。横轴是 MoLFormer 减 D-MPNN 的 RMSE，正值表示 D-MPNN 更准。每种计分方式的三个点共用同一批测试分子，横轴单位随性质变化。[主报告](RESULTS.md#三项物理性质与-bace-扩展) · [FreeSolv 的四条路线、成本与覆盖](RESULTS.md#freesolv-的水合自由能) · [BACE 逐次成绩](final/bace/results/scores.csv)
 
 ## 和随机森林比，要花多少计算时间？
 

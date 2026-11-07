@@ -1,0 +1,23 @@
+{
+  "dmpnn": {
+    "seconds": 3.767726299993228,
+    "records": 642
+  },
+  "mlp": {
+    "seconds": 5.49260159995174,
+    "records": 642
+  },
+  "rf": {
+    "seconds": 1.3921635000151582,
+    "records": 642
+  },
+  "tokens": {
+    "revision": "7b12d946c181a37f6012b9dc3b002275de070314",
+    "n": 642,
+    "dimension": 768,
+    "max_length": 46,
+    "over_202": 0,
+    "unknown_tokens": 1,
+    "rows_with_unknown": 1
+  }
+}

@@ -1,5 +1,28 @@
 # 怎样复核
 
+## FreeSolv 水合自由能
+
+从仓库根目录运行下面一行，可以用发布的逐分子预测重算 RMSE、MAE 和骨架等权 RMSE，并核对各模型的测试 ID、验证选参和实际骨架覆盖。只需要 NumPy 和 pandas。
+
+```powershell
+python final/freesolv/check.py final/freesolv/results
+```
+
+若要重新训练，使用本项目 CPU 环境和下文 BACE 实验同一版冻结 MoLFormer 权重（下载到 models/molformer）。以下命令会在新的目录生成划分、模型和结果。prepare 只读结构，各路线训练只读取对应训练和验证标签。evaluate 等三条路线都完成后再读取测试标签。用生成的 partitions.csv 对照[训练前固定的成员](final/freesolv/results/partitions.csv)，两份应相同。
+
+```powershell
+curl.exe -fL https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/SAMPL.csv -o SAMPL.csv
+$py = '.\.venv\Scripts\python.exe'
+$run = 'final/freesolv/run.py'
+$fsArgs = @('--raw','SAMPL.csv','--study','study','--work','rerun-freesolv/models','--results','rerun-freesolv/results')
+& $py $run prepare @fsArgs
+& $py $run fit @fsArgs --route dmpnn
+& $py $run fit @fsArgs --route rf
+& $py $run fit @fsArgs --route mlp --model models/molformer --manifest study/model_source_manifest.json
+& $py $run evaluate @fsArgs
+& $py final/freesolv/check.py rerun-freesolv/results
+```
+
 复核 Qwen 种子 0 的 56、11、64 号单元，在项目 CPU 环境运行下面这行。脚本读入保存的第一层和训练时的缩放器，按已发布的五个近邻 ID 逐维求和，再与 PyTorch 第一层的直接输出、上一轮的 ReLU 激活及其输出贡献核对。两种计算的绝对容差为 0.00001。逐维表按顺着该组总差方向的贡献降序排列，也可用贡献的绝对值排序查看反向项。[脚本](final/bace/ic50_only/input_gap.py) · [结果表](final/bace/ic50_only/input_gap)
 
 同一条命令还会重算最少替换维数。每个分子、单元独立排序，贡献相同时先取维度编号小的。脚本构造从第 0 步到首次达标的每一条替换向量，把保存的第一层权重直接作用于这些向量，并核对与累加法首次达标的步数一致。阈值用未舍入的数值判断。最后用 0638 各单元的达标名单在 0070 上再算一次，替换值取自 0070 自己的近邻。[逐步替换](final/bace/ic50_only/input_gap/prefixes.csv) · [最小维数和对照](final/bace/ic50_only/input_gap/thresholds.csv)

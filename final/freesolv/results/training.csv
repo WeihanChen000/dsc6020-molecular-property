@@ -1,0 +1,61 @@
+model,split,split_seed,seed,candidate,params,valid_rmse,fit_seconds,best_epoch,epochs_run,selected,path
+dmpnn,random_group,3101,0,0,"{""lr"": 0.001}",1.0601532023101312,10.315202000027057,95.0,125.0,True,dmpnn/random_group_3101/seed0_candidate0
+dmpnn,random_group,3101,0,1,"{""lr"": 0.0003}",1.1213337603772513,8.940765800012741,89.0,119.0,False,dmpnn/random_group_3101/seed0_candidate1
+dmpnn,random_group,3102,0,0,"{""lr"": 0.001}",0.6777596972978509,13.880970600002913,175.0,205.0,True,dmpnn/random_group_3102/seed0_candidate0
+dmpnn,random_group,3102,0,1,"{""lr"": 0.0003}",0.72032974041222,17.261370499967597,241.0,271.0,False,dmpnn/random_group_3102/seed0_candidate1
+dmpnn,random_group,3103,0,0,"{""lr"": 0.001}",0.7886059739091469,10.059302799985744,135.0,165.0,True,dmpnn/random_group_3103/seed0_candidate0
+dmpnn,random_group,3103,0,1,"{""lr"": 0.0003}",0.9383250502956564,9.001019900024403,119.0,149.0,False,dmpnn/random_group_3103/seed0_candidate1
+dmpnn,random_scaffold,3101,0,0,"{""lr"": 0.001}",2.546480524692435,3.0627947000321,23.0,53.0,False,dmpnn/random_scaffold_3101/seed0_candidate0
+dmpnn,random_scaffold,3101,0,1,"{""lr"": 0.0003}",2.4820108233672964,4.771022400003858,53.0,83.0,True,dmpnn/random_scaffold_3101/seed0_candidate1
+dmpnn,random_scaffold,3101,1,1,"{""lr"": 0.0003}",2.8972375298708664,5.29357700003311,63.0,93.0,True,dmpnn/random_scaffold_3101/seed1_candidate1
+dmpnn,random_scaffold,3101,2,1,"{""lr"": 0.0003}",2.7357202931102487,6.078893799975049,74.0,104.0,True,dmpnn/random_scaffold_3101/seed2_candidate1
+dmpnn,random_scaffold,3102,0,0,"{""lr"": 0.001}",1.8664088379319217,5.41937300004065,64.0,94.0,True,dmpnn/random_scaffold_3102/seed0_candidate0
+dmpnn,random_scaffold,3102,0,1,"{""lr"": 0.0003}",2.1695975362542,5.556560299999546,65.0,95.0,False,dmpnn/random_scaffold_3102/seed0_candidate1
+dmpnn,random_scaffold,3102,1,0,"{""lr"": 0.001}",2.0074233645953896,9.90039969998179,136.0,166.0,True,dmpnn/random_scaffold_3102/seed1_candidate0
+dmpnn,random_scaffold,3102,2,0,"{""lr"": 0.001}",1.913798162104986,6.972995400021318,89.0,119.0,True,dmpnn/random_scaffold_3102/seed2_candidate0
+dmpnn,random_scaffold,3103,0,0,"{""lr"": 0.001}",1.2053473197202706,9.76423860003706,134.0,164.0,True,dmpnn/random_scaffold_3103/seed0_candidate0
+dmpnn,random_scaffold,3103,0,1,"{""lr"": 0.0003}",1.4562736836833472,8.888753200008068,121.0,150.0,False,dmpnn/random_scaffold_3103/seed0_candidate1
+dmpnn,random_scaffold,3103,1,0,"{""lr"": 0.001}",1.4081670950464549,6.630560000019614,84.0,114.0,True,dmpnn/random_scaffold_3103/seed1_candidate0
+dmpnn,random_scaffold,3103,2,0,"{""lr"": 0.001}",1.4889600014913704,3.672311900008936,33.0,63.0,True,dmpnn/random_scaffold_3103/seed2_candidate0
+mlp,random_group,3101,0,0,"{""lr"": 0.001}",1.3329080072491233,2.045742899994366,130.0,170.0,True,mlp/random_group_3101/seed0_candidate0
+mlp,random_group,3101,0,1,"{""lr"": 0.0003}",1.3614858695239538,0.8744150999700651,30.0,70.0,False,mlp/random_group_3101/seed0_candidate1
+mlp,random_group,3102,0,0,"{""lr"": 0.001}",1.3949288892573448,0.5995455999509431,13.0,53.0,True,mlp/random_group_3102/seed0_candidate0
+mlp,random_group,3102,0,1,"{""lr"": 0.0003}",1.40733078309319,0.6108582000015303,14.0,54.0,False,mlp/random_group_3102/seed0_candidate1
+mlp,random_group,3103,0,0,"{""lr"": 0.001}",1.42150969292818,1.7535261999582872,114.0,154.0,True,mlp/random_group_3103/seed0_candidate0
+mlp,random_group,3103,0,1,"{""lr"": 0.0003}",1.4932477241845092,1.490668199956417,96.0,136.0,False,mlp/random_group_3103/seed0_candidate1
+mlp,random_scaffold,3101,0,0,"{""lr"": 0.001}",2.4216753530274957,1.3129469999694263,82.0,122.0,True,mlp/random_scaffold_3101/seed0_candidate0
+mlp,random_scaffold,3101,0,1,"{""lr"": 0.0003}",2.6324234701034706,1.3492025000159629,86.0,126.0,False,mlp/random_scaffold_3101/seed0_candidate1
+mlp,random_scaffold,3101,1,0,"{""lr"": 0.001}",2.550791447968224,2.051577500009444,152.0,192.0,True,mlp/random_scaffold_3101/seed1_candidate0
+mlp,random_scaffold,3101,2,0,"{""lr"": 0.001}",2.509392778522616,1.0944146999972872,61.0,101.0,True,mlp/random_scaffold_3101/seed2_candidate0
+mlp,random_scaffold,3102,0,0,"{""lr"": 0.001}",2.019496983491577,0.5725010000169277,13.0,53.0,True,mlp/random_scaffold_3102/seed0_candidate0
+mlp,random_scaffold,3102,0,1,"{""lr"": 0.0003}",2.1758491052799616,1.0505598000017926,56.0,96.0,False,mlp/random_scaffold_3102/seed0_candidate1
+mlp,random_scaffold,3102,1,0,"{""lr"": 0.001}",2.0151673922523248,1.0288413999951445,54.0,94.0,True,mlp/random_scaffold_3102/seed1_candidate0
+mlp,random_scaffold,3102,2,0,"{""lr"": 0.001}",2.187856546683503,1.0248283999972043,55.0,95.0,True,mlp/random_scaffold_3102/seed2_candidate0
+mlp,random_scaffold,3103,0,0,"{""lr"": 0.001}",2.0011992396462968,0.6078663000371307,21.0,61.0,False,mlp/random_scaffold_3103/seed0_candidate0
+mlp,random_scaffold,3103,0,1,"{""lr"": 0.0003}",1.9160677429633084,1.419935500016436,103.0,143.0,True,mlp/random_scaffold_3103/seed0_candidate1
+mlp,random_scaffold,3103,1,1,"{""lr"": 0.0003}",1.9900411423033488,1.1655612000031397,77.0,117.0,True,mlp/random_scaffold_3103/seed1_candidate1
+mlp,random_scaffold,3103,2,1,"{""lr"": 0.0003}",2.0467725905524534,1.2242820999817925,82.0,122.0,True,mlp/random_scaffold_3103/seed2_candidate1
+rf,random_group,3101,0,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",1.195601800348687,0.8149602999910712,,,False,rf/random_group_3101/seed0_candidate0
+rf,random_group,3101,0,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",1.1691939777674225,0.4760015999781899,,,True,rf/random_group_3101/seed0_candidate1
+rf,random_group,3101,0,2,"{""max_features"": 1.0, ""min_samples_leaf"": 2}",1.2632620076917882,0.8711806999635883,,,False,rf/random_group_3101/seed0_candidate2
+rf,random_group,3102,0,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",0.9432635205821512,1.0521969000110405,,,False,rf/random_group_3102/seed0_candidate0
+rf,random_group,3102,0,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",0.8598392725429032,0.5274182999855839,,,True,rf/random_group_3102/seed0_candidate1
+rf,random_group,3102,0,2,"{""max_features"": 1.0, ""min_samples_leaf"": 2}",0.896411673506416,0.7070479999529198,,,False,rf/random_group_3102/seed0_candidate2
+rf,random_group,3103,0,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",1.1563184479831758,0.8182866999995895,,,False,rf/random_group_3103/seed0_candidate0
+rf,random_group,3103,0,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",0.8885674151011108,0.4756947999703698,,,True,rf/random_group_3103/seed0_candidate1
+rf,random_group,3103,0,2,"{""max_features"": 1.0, ""min_samples_leaf"": 2}",1.126588308533712,0.7458069999702275,,,False,rf/random_group_3103/seed0_candidate2
+rf,random_scaffold,3101,0,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",3.807065555543107,0.8469806999783032,,,False,rf/random_scaffold_3101/seed0_candidate0
+rf,random_scaffold,3101,0,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",3.698525830634032,0.4638830999610945,,,True,rf/random_scaffold_3101/seed0_candidate1
+rf,random_scaffold,3101,0,2,"{""max_features"": 1.0, ""min_samples_leaf"": 2}",3.7488202187566,0.6814397999551147,,,False,rf/random_scaffold_3101/seed0_candidate2
+rf,random_scaffold,3101,1,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",3.833852489413128,0.4948479000013321,,,True,rf/random_scaffold_3101/seed1_candidate1
+rf,random_scaffold,3101,2,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",3.681008575434389,0.5064590999973007,,,True,rf/random_scaffold_3101/seed2_candidate1
+rf,random_scaffold,3102,0,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",3.016969532601484,0.7541039000498131,,,True,rf/random_scaffold_3102/seed0_candidate0
+rf,random_scaffold,3102,0,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",3.078362211877453,0.5666341999894939,,,False,rf/random_scaffold_3102/seed0_candidate1
+rf,random_scaffold,3102,0,2,"{""max_features"": 1.0, ""min_samples_leaf"": 2}",3.1264167230593016,0.6561421999940649,,,False,rf/random_scaffold_3102/seed0_candidate2
+rf,random_scaffold,3102,1,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",3.043440900929728,0.8375876999925822,,,True,rf/random_scaffold_3102/seed1_candidate0
+rf,random_scaffold,3102,2,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",2.9972181634778976,0.8795454000355676,,,True,rf/random_scaffold_3102/seed2_candidate0
+rf,random_scaffold,3103,0,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",2.3459373266807426,0.9726891000173056,,,True,rf/random_scaffold_3103/seed0_candidate0
+rf,random_scaffold,3103,0,1,"{""max_features"": 0.5, ""min_samples_leaf"": 1}",2.4361038807394744,0.5274121999973431,,,False,rf/random_scaffold_3103/seed0_candidate1
+rf,random_scaffold,3103,0,2,"{""max_features"": 1.0, ""min_samples_leaf"": 2}",2.4435489499847174,0.6191459000110626,,,False,rf/random_scaffold_3103/seed0_candidate2
+rf,random_scaffold,3103,1,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",2.317261071845456,0.7439901999896392,,,True,rf/random_scaffold_3103/seed1_candidate0
+rf,random_scaffold,3103,2,0,"{""max_features"": 1.0, ""min_samples_leaf"": 1}",2.355274503054867,0.8148913999903016,,,True,rf/random_scaffold_3103/seed2_candidate0
