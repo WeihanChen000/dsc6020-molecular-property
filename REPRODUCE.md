@@ -1,5 +1,11 @@
 # 怎样复核
 
+复核 BACE_0638 组内十条记录时，在仓库根目录用项目 CPU 环境运行下列命令。脚本按 Murcko 骨架选成员，核对原始测量类型、浓度和 ID，从预测重算平方误差差值，与已发布的骨架总分核对。结构图以 1310 的完整连接结构对齐，高亮其余分子相对它多出的原子。所需原始文件链接见下文。[完整输出](final/bace/ic50_only/scaffold_0638)
+
+```powershell
+python final/bace/ic50_only/scaffold_0638.py --raw bace.csv --supplement ci6b00290_si_001.zip --out checked-0638
+```
+
 要复算种子 0 的排名变化，用下方已有的 Qwen 和明确 IC50 模型包，再解压[混合训练的 MoLFormer 模型包](https://github.com/WeihanChen000/dsc6020-molecular-property/releases/tag/study-v8)到 `grouped-runs`。在仓库根目录的项目 Python 环境执行以下命令，只读取候选训练曲线、验证预测和已发布的测试预测。
 
 ```powershell
