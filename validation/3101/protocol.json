@@ -1,0 +1,332 @@
+{
+  "split_seed": 3101,
+  "train_seed": 0,
+  "epochs": 20,
+  "patience": 10,
+  "criteria": "unrounded validation RMSE in original units; earliest epoch; first listed candidate",
+  "candidates": {
+    "M1": [
+      "native",
+      3e-05,
+      0,
+      0
+    ],
+    "M2": [
+      "native",
+      0.0001,
+      0,
+      0
+    ],
+    "Q1": [
+      "masked_mean",
+      0.0001,
+      8,
+      16
+    ],
+    "Q2": [
+      "last",
+      0.0001,
+      8,
+      16
+    ],
+    "Q3": [
+      "masked_mean",
+      0.0001,
+      16,
+      16
+    ],
+    "Q4": [
+      "masked_mean",
+      0.0001,
+      8,
+      32
+    ],
+    "Q5": [
+      "masked_mean",
+      0.0001,
+      16,
+      32
+    ],
+    "Q6": [
+      "masked_mean",
+      3e-05,
+      8,
+      16
+    ]
+  },
+  "queue": [
+    [
+      "FreeSolv",
+      "random_group",
+      "M1"
+    ],
+    [
+      "FreeSolv",
+      "random_group",
+      "M2"
+    ],
+    [
+      "FreeSolv",
+      "random_group",
+      "Q1"
+    ],
+    [
+      "FreeSolv",
+      "random_group",
+      "Q2"
+    ],
+    [
+      "FreeSolv",
+      "random_group",
+      "Q3"
+    ],
+    [
+      "FreeSolv",
+      "random_group",
+      "Q4"
+    ],
+    [
+      "FreeSolv",
+      "random_group",
+      "Q5"
+    ],
+    [
+      "FreeSolv",
+      "random_group",
+      "Q6"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "M1"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "M2"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "Q1"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "Q2"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "Q3"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "Q4"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "Q5"
+    ],
+    [
+      "FreeSolv",
+      "random_scaffold",
+      "Q6"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "M1"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "M2"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "Q1"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "Q2"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "Q3"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "Q4"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "Q5"
+    ],
+    [
+      "ESOL",
+      "random_group",
+      "Q6"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "M1"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "M2"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "Q1"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "Q2"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "Q3"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "Q4"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "Q5"
+    ],
+    [
+      "ESOL",
+      "random_scaffold",
+      "Q6"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "M1"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "M2"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "Q1"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "Q2"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "Q3"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "Q4"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "Q5"
+    ],
+    [
+      "Lipophilicity",
+      "random_group",
+      "Q6"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "M1"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "M2"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "Q1"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "Q2"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "Q3"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "Q4"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "Q5"
+    ],
+    [
+      "Lipophilicity",
+      "random_scaffold",
+      "Q6"
+    ]
+  ],
+  "inputs": {
+    "FreeSolv_random_group": {
+      "train": 514,
+      "valid": 64,
+      "sha256": "546e8b46256d7679c88cb17d8bbe4068f7ebecdf8a3633f4a02adb86c8cf5cf0"
+    },
+    "FreeSolv_random_scaffold": {
+      "train": 514,
+      "valid": 64,
+      "sha256": "71db15d9de43b6d39da52265e9106917074e478d5c0e434a156c13a10056c4f3"
+    },
+    "ESOL_random_group": {
+      "train": 904,
+      "valid": 112,
+      "sha256": "b8a61b5e30d259c90677ea81aa8aec7df8b9e6c8e3cd125d68db37c3b1af6d7b"
+    },
+    "ESOL_random_scaffold": {
+      "train": 904,
+      "valid": 112,
+      "sha256": "f956228f089a4844534d8715776f015cebd8b1f3e61b6b24fee78d82d473d9db"
+    },
+    "Lipophilicity_random_group": {
+      "train": 3360,
+      "valid": 420,
+      "sha256": "852e111f9837886b7df982e9b163c740cbde9a864cd9037c08b89d026dd2d097"
+    },
+    "Lipophilicity_random_scaffold": {
+      "train": 3360,
+      "valid": 420,
+      "sha256": "c8033fd70cb880d4d6b6e00848401eb88d9831772c18bd2038dc37e4e27c2fc6"
+    }
+  },
+  "test_access": false
+}

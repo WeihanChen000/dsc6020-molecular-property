@@ -1,4 +1,23 @@
-# 换一批分子骨架，GNN 和 MoLFormer 谁预测得更准？
+# 分子性质预测与结构泛化 · DSC6020
+
+## 本轮结果 · 划分种子 3101
+
+我们用同样的训练和验证分子比较 RF、D-MPNN、联合微调的 MoLFormer 和 4-bit QLoRA 微调的 Qwen3-1.7B。ESOL 和 Lipophilicity 各有一个模型在两种划分上都领先；FreeSolv 换成骨架整组留出后，领先模型发生了变化。
+
+| 验证 RMSE（越低越好） | 划分 | RF | D-MPNN | MoLFormer | Qwen |
+|---|---|---:|---:|---:|---:|
+| ESOL（水溶性） | Group Random | 0.5717 | 0.5605 | **0.5417** | 0.7119 |
+| ESOL | Scaffold | 0.7751 | 0.7375 | **0.6960** | 0.7368 |
+| Lipophilicity（亲脂性） | Group Random | 0.7236 | **0.5660** | 0.6047 | 0.7047 |
+| Lipophilicity | Scaffold | 0.7860 | **0.6503** | 0.6873 | 0.7584 |
+| FreeSolv（水合自由能） | Group Random | 1.1692 | 1.0602 | **0.9709** | 1.3123 |
+| FreeSolv | Scaffold | 3.6985 | **2.4820** | 3.1626 | 3.8019 |
+
+RF、D-MPNN 沿用核验过的验证成绩。两条语言模型路线共试了 48 个候选，47 个正常完成。Lipophilicity 的 Scaffold 上，MoLFormer 的 M2 两次触发零梯度检查，该格只有 M1 参与选模。RTX 5060 Laptop 8 GB 从启动到核验共用 **13 小时 52 分钟**，含中断和复跑。本轮仅用训练集和验证集；3102、3103 待小组确认。
+
+[本轮候选、失败记录和用时](validation/3101/README.md) · [48 个候选逐项成绩](validation/3101/candidates.csv) · [下载本轮验证记录包](https://raw.githubusercontent.com/WeihanChen000/dsc6020-molecular-property/main/validation/3101/validation-records.zip)
+
+## 前期实验 · 冻结分子语言模型与骨架留出
 
 三个物理性质给出了不同的答案。亲脂性上 D-MPNN 九次都领先；水溶性更挑测试骨架；新增的 FreeSolv 水合自由能上，D-MPNN 按分子算赢八次，按骨架算只赢四次。最后用 BACE 酶抑制活性作扩展，检查这两条路线到了生物活性任务上表现如何。
 
