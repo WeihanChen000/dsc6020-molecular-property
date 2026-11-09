@@ -2,6 +2,8 @@
 
 ## 本轮结果 · 划分种子 3101
 
+[队友问答：参数出处、GPU pilot、20 轮预算和实际耗时](validation/3101/QA.md)
+
 我们用同样的训练和验证分子比较 RF、D-MPNN、联合微调的 MoLFormer 和 4-bit QLoRA 微调的 Qwen3-1.7B。ESOL 和 Lipophilicity 各有一个模型在两种划分上都领先；FreeSolv 换成骨架整组留出后，领先模型发生了变化。
 
 | 验证 RMSE（越低越好） | 划分 | RF | D-MPNN | MoLFormer | Qwen |

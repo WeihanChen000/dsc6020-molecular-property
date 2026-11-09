@@ -1,5 +1,7 @@
 # 3101 验证结果与小组待确认事项
 
+[Qwen 的 rank/alpha 为什么这样选？GPU pilot 测到了什么？每轮和整批要多久？](QA.md)
+
 2026 年 11 月 9 日。三个数据集各做 Group Random 和 Bemis–Murcko Scaffold 两种划分，划分种子 3101、训练种子 0。四个模型在每份划分内使用相同的分子。下表按各自任务的原单位计算验证 RMSE，越低越好。只在同一行内比较四个模型。
 
 | 数据集 | 划分 | 训练 / 验证条数 | RF | D-MPNN | MoLFormer（候选） | Qwen（候选） |
