@@ -21,6 +21,8 @@ D-MPNN 在六种设置中有五种取得最低的平均测试 RMSE 和 MAE。亲
 
 [正式报告：RMSE、MAE、标准差和逐份排名](results/README.md) · [72 组成绩总表](results/all_scores.csv) · [候选、计时与验证记录](results/validation/README.md)
 
+用保存的权重在同一批测试分子上复测，D-MPNN 从建图到预测平均用 0.395 ms/分子。RF 的树预测只用 0.118 ms/分子，从 SMILES 计算描述符另用 4.319 ms/分子。[四模型成本与精度对照](results/cost/README.md)
+
 ## 三个任务遇到新骨架时，误差怎么变？
 
 ![ESOL、Lipophilicity、FreeSolv 上四模型在三个划分种子的配对测试 RMSE](results/structure/generalization.png)
