@@ -4,6 +4,8 @@
 
 ## 三个任务的正式测试
 
+[下载正式实验的 36 份入选权重](weights/README.md)（MoLFormer 和 Qwen 各 18 份，可按任务、划分和种子单独下载）。
+
 D-MPNN 在六种设置中有五种取得最低的平均测试 RMSE 和 MAE。亲脂性的骨架划分最稳，三个划分种子上都是 D-MPNN 第一、MoLFormer 第二。ESOL 的骨架划分最接近，RF 和 D-MPNN 的平均 RMSE 只差 0.0046 logS。
 
 | 性质 | 划分 | RF | D-MPNN | MoLFormer | Qwen |

@@ -1,5 +1,7 @@
 # 三批验证结果 · 3101、3102、3103
 
+[下载 36 份入选权重，查看 CPU 和 GPU 加载示例](../../weights/README.md)
+
 三个划分种子共用同一份[正式训练脚本](../../formal_3101/train.py#L18)。MoLFormer 的编码器与回归头联合微调，Qwen 的 4-bit 量化和 LoRA 层在[模型初始化](../../revised_gpu_pilot/gpu.py#L30)中定义。[候选参数](../../formal_3101/protocol.py#L16)和[入选权重清单](selected_checkpoints.csv)可以按候选编号对照。运行原脚本需要本地实验归档的训练输入、基础模型与 GPU 环境。
 
 三批共 144 个候选，正常完成 143 个。每份划分从正常完成者中独立选参，共锁定 36/36 个语言模型 checkpoint。RF 和 D-MPNN 取同一划分上已核验的验证成绩。
