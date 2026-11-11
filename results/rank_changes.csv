@@ -1,0 +1,19 @@
+dataset,split,seed,valid_first,test_first,same_first,same_order,valid_order,test_order,mae_first
+ESOL,random_group,3101,MoLFormer,D-MPNN,False,False,MoLFormer > D-MPNN > RF > Qwen,D-MPNN > MoLFormer > RF > Qwen,MoLFormer
+ESOL,random_group,3102,MoLFormer,D-MPNN,False,False,MoLFormer > D-MPNN > RF > Qwen,D-MPNN > MoLFormer > RF > Qwen,D-MPNN
+ESOL,random_group,3103,D-MPNN,D-MPNN,True,True,D-MPNN > RF > MoLFormer > Qwen,D-MPNN > RF > MoLFormer > Qwen,D-MPNN
+ESOL,random_scaffold,3101,MoLFormer,RF,False,False,MoLFormer > Qwen > D-MPNN > RF,RF > D-MPNN > MoLFormer > Qwen,RF
+ESOL,random_scaffold,3102,D-MPNN,D-MPNN,True,False,D-MPNN > MoLFormer > Qwen > RF,D-MPNN > RF > MoLFormer > Qwen,D-MPNN
+ESOL,random_scaffold,3103,MoLFormer,RF,False,False,MoLFormer > RF > D-MPNN > Qwen,RF > MoLFormer > D-MPNN > Qwen,RF
+FreeSolv,random_group,3101,MoLFormer,D-MPNN,False,False,MoLFormer > D-MPNN > RF > Qwen,D-MPNN > RF > MoLFormer > Qwen,D-MPNN
+FreeSolv,random_group,3102,D-MPNN,D-MPNN,True,True,D-MPNN > MoLFormer > RF > Qwen,D-MPNN > MoLFormer > RF > Qwen,D-MPNN
+FreeSolv,random_group,3103,D-MPNN,D-MPNN,True,False,D-MPNN > RF > MoLFormer > Qwen,D-MPNN > MoLFormer > RF > Qwen,D-MPNN
+FreeSolv,random_scaffold,3101,D-MPNN,D-MPNN,True,True,D-MPNN > MoLFormer > RF > Qwen,D-MPNN > MoLFormer > RF > Qwen,D-MPNN
+FreeSolv,random_scaffold,3102,D-MPNN,MoLFormer,False,False,D-MPNN > MoLFormer > Qwen > RF,MoLFormer > D-MPNN > RF > Qwen,MoLFormer
+FreeSolv,random_scaffold,3103,D-MPNN,D-MPNN,True,False,D-MPNN > MoLFormer > RF > Qwen,D-MPNN > MoLFormer > Qwen > RF,D-MPNN
+Lipophilicity,random_group,3101,D-MPNN,D-MPNN,True,False,D-MPNN > MoLFormer > Qwen > RF,D-MPNN > MoLFormer > RF > Qwen,D-MPNN
+Lipophilicity,random_group,3102,MoLFormer,D-MPNN,False,False,MoLFormer > D-MPNN > RF > Qwen,D-MPNN > MoLFormer > RF > Qwen,D-MPNN
+Lipophilicity,random_group,3103,D-MPNN,MoLFormer,False,False,D-MPNN > MoLFormer > Qwen > RF,MoLFormer > RF > D-MPNN > Qwen,D-MPNN
+Lipophilicity,random_scaffold,3101,D-MPNN,D-MPNN,True,False,D-MPNN > MoLFormer > Qwen > RF,D-MPNN > MoLFormer > RF > Qwen,D-MPNN
+Lipophilicity,random_scaffold,3102,D-MPNN,D-MPNN,True,False,D-MPNN > MoLFormer > RF > Qwen,D-MPNN > MoLFormer > Qwen > RF,D-MPNN
+Lipophilicity,random_scaffold,3103,D-MPNN,D-MPNN,True,True,D-MPNN > MoLFormer > RF > Qwen,D-MPNN > MoLFormer > RF > Qwen,D-MPNN

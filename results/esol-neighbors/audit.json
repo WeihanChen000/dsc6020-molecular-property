@@ -1,0 +1,23 @@
+{
+  "3101": {
+    "rf": {
+      "max_features": 0.5,
+      "min_samples_leaf": 1
+    },
+    "molformer_candidate": "M1",
+    "epoch": 2,
+    "lr": 3e-05
+  },
+  "3103": {
+    "rf": {
+      "max_features": 1.0,
+      "min_samples_leaf": 1
+    },
+    "molformer_candidate": "M1",
+    "epoch": 10,
+    "lr": 3e-05
+  },
+  "shared_training_ids": 800,
+  "shared_other_test": 21,
+  "rdkit": "2023.09.6"
+}

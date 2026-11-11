@@ -1,0 +1,3 @@
+seed,epoch,original_sha256,identical_tensors,total_tensors,max_validation_prediction_diff,max_diff_train_mse_standardized,max_diff_valid_rmse,max_diff_valid_mae,max_cohort_prediction_diff
+3101,2,a61126ee58ed5e7dfa898a6ac03d766ba8704016484defe5f86cd5a67bbc86b3,211,211,0.0,0.0,0.0,0.0,7.60715922476507e-07
+3103,10,af4c16c19405127b6ccc1ec0b594e765a9c343f0d9cb5a640be6d3926cf24e6d,211,211,0.0,0.0,0.0,0.0,6.883382965838791e-07
