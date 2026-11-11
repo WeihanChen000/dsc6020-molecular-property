@@ -21,6 +21,12 @@ D-MPNN 在六种设置中有五种取得最低的平均测试 RMSE 和 MAE。亲
 
 [正式报告：RMSE、MAE、标准差和逐份排名](results/README.md) · [72 组成绩总表](results/all_scores.csv) · [候选、计时与验证记录](results/validation/README.md)
 
+## 三个任务遇到新骨架时，误差怎么变？
+
+![ESOL、Lipophilicity、FreeSolv 上四模型在三个划分种子的配对测试 RMSE](results/structure/generalization.png)
+
+ESOL 和 FreeSolv 的四个模型在三个种子上误差都升高；Lipophilicity 有些种子的误差反而下降。三个任务中，低相似度档的平均绝对误差均高于高相似度档。[结构泛化与相似度分析](results/structure/README.md) · [各档 MAE、分子数和骨架数](results/structure/bins_pooled.csv)
+
 ## ESOL 为什么换了排名？
 
 在 3101 和 3103 的骨架划分上，验证集都是 MoLFormer 领先，测试集却都是 RF 第一。细看同一组 21 条巴比妥酸骨架记录，3101 上 RF 更准，3103 上 MoLFormer 更准。即使把两次训练都固定在第 2 轮，或都固定在第 10 轮，这组的排名仍然翻转。这个结论针对这 21 条记录，正式总表仍按验证集选中的轮次和完整测试集计分。
